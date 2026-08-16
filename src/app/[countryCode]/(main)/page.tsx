@@ -6,9 +6,9 @@ import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 
 export const metadata: Metadata = {
-  title: "Medusa Next.js Starter Template",
+  title: "RC Choice | Kabels & Accessoires",
   description:
-    "A performant frontend ecommerce starter template with Next.js 15 and Medusa.",
+    "Betrouwbare kabels, adapters en accessoires van RC Choice.",
 }
 
 export default async function Home(props: {
