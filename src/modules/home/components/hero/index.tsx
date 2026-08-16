@@ -1,33 +1,19 @@
-import { Github } from "@medusajs/icons"
-import { Button, Heading } from "@medusajs/ui"
+import { Heading } from "@medusajs/ui"
 
 const Hero = () => {
   return (
-    <div className="h-[75vh] w-full border-b border-ui-border-base relative bg-ui-bg-subtle">
-      <div className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center small:p-32 gap-6">
-        <span>
-          <Heading
-            level="h1"
-            className="text-3xl leading-10 text-ui-fg-base font-normal"
-          >
-            Ecommerce Starter Template
-          </Heading>
-          <Heading
-            level="h2"
-            className="text-3xl leading-10 text-ui-fg-subtle font-normal"
-          >
-            Powered by Medusa and Next.js
-          </Heading>
-        </span>
-        <a
-          href="https://github.com/medusajs/nextjs-starter-medusa"
-          target="_blank"
+    <div className="h-[60vh] w-full border-b border-ui-border-base relative bg-ui-bg-subtle">
+      <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-6 gap-4">
+        <Heading
+          level="h1"
+          className="text-4xl small:text-5xl leading-tight text-ui-fg-base font-normal"
         >
-          <Button variant="secondary">
-            View on GitHub
-            <Github />
-          </Button>
-        </a>
+          De juiste kabel. Meteen geregeld.
+        </Heading>
+
+        <p className="text-lg text-ui-fg-subtle max-w-2xl">
+          Betrouwbare HDMI-, DisplayPort-, USB- en netwerkkabels van RC Choice.
+        </p>
       </div>
     </div>
   )
