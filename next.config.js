@@ -27,6 +27,10 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
+  protocol: "https",
+  hostname: "media.s-bol.com",
+],
+      {
         protocol: "http",
         hostname: "localhost",
       },
