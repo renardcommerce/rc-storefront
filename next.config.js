@@ -13,23 +13,27 @@ const S3_PATHNAME = process.env.MEDUSA_CLOUD_S3_PATHNAME
  */
 const nextConfig = {
   reactStrictMode: true,
+
   logging: {
     fetches: {
       fullUrl: true,
     },
   },
+
   eslint: {
     ignoreDuringBuilds: true,
   },
+
   typescript: {
     ignoreBuildErrors: true,
   },
+
   images: {
     remotePatterns: [
       {
-  protocol: "https",
-  hostname: "media.s-bol.com",
-],
+        protocol: "https",
+        hostname: "media.s-bol.com",
+      },
       {
         protocol: "http",
         hostname: "localhost",
@@ -46,6 +50,7 @@ const nextConfig = {
         protocol: "https",
         hostname: "medusa-server-testing.s3.us-east-1.amazonaws.com",
       },
+
       ...(S3_HOSTNAME && S3_PATHNAME
         ? [
             {
