@@ -35,6 +35,10 @@ const nextConfig = {
         hostname: "media.s-bol.com",
       },
       {
+        protocol: "https",
+        hostname: "cdn.rcchoice.nl",
+      },
+      {
         protocol: "http",
         hostname: "localhost",
       },
