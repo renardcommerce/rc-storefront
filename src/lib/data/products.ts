@@ -50,6 +50,7 @@ export const listProducts = async ({
   }
 
   const next = {
+    revalidate: 300,
     ...(await getCacheOptions("products")),
   }
 
