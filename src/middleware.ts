@@ -5,6 +5,17 @@ const BACKEND_URL = process.env.MEDUSA_BACKEND_URL
 const PUBLISHABLE_API_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
 const DEFAULT_REGION = process.env.NEXT_PUBLIC_DEFAULT_REGION || "us"
 
+// Staging safety net: block indexing on every response until commercial
+// go-live is explicitly approved. Remove/flip this when going live.
+const SITE_INDEXABLE = process.env.NEXT_PUBLIC_SITE_INDEXABLE === "true"
+
+function withRobotsHeader(res: NextResponse) {
+  if (!SITE_INDEXABLE) {
+    res.headers.set("X-Robots-Tag", "noindex, nofollow")
+  }
+  return res
+}
+
 const regionMapCache = {
   regionMap: new Map<string, HttpTypes.StoreRegion>(),
   regionMapUpdated: Date.now(),
@@ -121,7 +132,7 @@ export async function middleware(request: NextRequest) {
 
   // if one of the country codes is in the url and the cache id is set, return next
   if (urlHasCountryCode && cacheIdCookie) {
-    return NextResponse.next()
+    return withRobotsHeader(NextResponse.next())
   }
 
   // if one of the country codes is in the url and the cache id is not set, set the cache id and redirect
@@ -130,12 +141,12 @@ export async function middleware(request: NextRequest) {
       maxAge: 60 * 60 * 24,
     })
 
-    return response
+    return withRobotsHeader(response)
   }
 
   // check if the url is a static asset
   if (request.nextUrl.pathname.includes(".")) {
-    return NextResponse.next()
+    return withRobotsHeader(NextResponse.next())
   }
 
   const redirectPath =
@@ -149,13 +160,15 @@ export async function middleware(request: NextRequest) {
     response = NextResponse.redirect(`${redirectUrl}`, 307)
   } else if (!urlHasCountryCode && !countryCode) {
     // Handle case where no valid country code exists (empty regions)
-    return new NextResponse(
-      "No valid regions configured. Please set up regions with countries in your Medusa Admin.",
-      { status: 500 }
+    return withRobotsHeader(
+      new NextResponse(
+        "No valid regions configured. Please set up regions with countries in your Medusa Admin.",
+        { status: 500 }
+      )
     )
   }
 
-  return response
+  return withRobotsHeader(response)
 }
 
 export const config = {
