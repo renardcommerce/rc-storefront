@@ -41,7 +41,7 @@ const Review = ({ cart }: { cart: any }) => {
                 Door op de knop Bestelling plaatsen te klikken, bevestig je dat
                 je onze Gebruiksvoorwaarden, Verkoopvoorwaarden en
                 Retourbeleid hebt gelezen, begrijpt en accepteert, en erkent
-                dat je het Privacybeleid van Medusa Store hebt gelezen.
+                dat je het Privacybeleid van RC Choice hebt gelezen.
               </Text>
             </div>
           </div>
