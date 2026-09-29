@@ -4,8 +4,8 @@
 export const COMPANY = {
   brand: "RC Choice",
   legalName: "Renard Commerce",
-  email: "account@renardcommerce.com", // klantenservice-mailadres (B4)
-  address: "Zuideinde 10 A, 8428 HE Fochteloo", // bezoek-/correspondentieadres (B4)
+  email: "service@renardcommerce.com", // klantenservice-mailadres (B4)
+  address: "Zuideinde 10 A, 8428 HE Fochteloo, Nederland", // bezoek-/correspondentieadres (B4)
   returnAddress: "", // retouradres (B4)
   kvk: "80198961", // KvK-nummer (B4)
   vat: "NL003405536B18", // btw-nummer (B4)
@@ -48,7 +48,7 @@ export const CONTENT_PAGES: Record<string, ContentPage> = {
       { type: "h", text: "Hoe kan ik betalen?" },
       { type: "p", text: "Je betaalt veilig online via onze betaalpartner, onder andere met iDEAL. De beschikbare betaalmethoden zie je bij het afrekenen." },
       { type: "h", text: "Kan ik mijn bestelling retourneren?" },
-      { type: "p", text: "Ja. Je hebt 14 dagen bedenktijd na ontvangst. Lees op de pagina Retourneren hoe je een retour aanmeldt." },
+      { type: "p", text: "Ja, en retourneren is gratis. Je hebt 14 dagen bedenktijd na ontvangst. Lees op de pagina Retourneren hoe je een retour aanmeldt." },
       { type: "h", text: "Welke kabel heb ik nodig?" },
       { type: "p", text: "Controleer welke aansluitingen je apparaten hebben (bijvoorbeeld HDMI, DisplayPort, USB-C of RJ45) en welke lengte je nodig hebt. Twijfel je? Stuur ons een bericht met de apparaten die je wilt verbinden." },
       { type: "h", text: "Mijn product is defect of beschadigd. Wat nu?" },
@@ -81,7 +81,7 @@ export const CONTENT_PAGES: Record<string, ContentPage> = {
   },
   retourneren: {
     title: "Retourneren",
-    description: "Zo werkt retourneren bij RC Choice: 14 dagen bedenktijd.",
+    description: "Zo werkt retourneren bij RC Choice: 14 dagen bedenktijd en gratis retour.",
     blocks: [
       { type: "h", text: "14 dagen bedenktijd" },
       { type: "p", text: "Je hebt het recht om je aankoop binnen 14 dagen na ontvangst zonder opgave van reden te herroepen. Na je melding heb je nog 14 dagen om het product terug te sturen." },
@@ -96,7 +96,7 @@ export const CONTENT_PAGES: Record<string, ContentPage> = {
       { type: "ul", items: [
         "Behandel het product tijdens de bedenktijd zoals je dat in een winkel zou doen: je mag het uitpakken en bekijken om te beoordelen of je het wilt houden.",
         "Is het product meer gebruikt dan nodig of beschadigd, dan kunnen we een waardevermindering in rekening brengen.",
-        "De kosten voor het terugsturen zijn voor jouw rekening, tenzij het product defect is of verkeerd is geleverd.",
+        "Retourneren is gratis: de kosten van het terugsturen zijn voor onze rekening.",
       ] },
       { type: "h", text: "Terugbetaling" },
       { type: "p", text: "We betalen het aankoopbedrag binnen 14 dagen na je herroeping terug, via dezelfde betaalmethode. We mogen wachten met terugbetalen tot we het product hebben ontvangen of je hebt aangetoond dat je het hebt teruggestuurd." },
