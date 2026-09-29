@@ -28,7 +28,7 @@ export default async function TransferPage({
         {!success && (
           <>
             <Text className="text-zinc-600">
-              There was an error accepting the transfer. Please try again.
+              Er ging iets mis bij het accepteren. Probeer het opnieuw.
             </Text>
             {error && (
               <Text className="text-red-500">Error message: {error}</Text>
