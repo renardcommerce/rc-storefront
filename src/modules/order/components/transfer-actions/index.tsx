@@ -69,7 +69,7 @@ const TransferActions = ({ id, token }: { id: string; token: string }) => {
               status?.accept === "pending" || status?.decline === "pending"
             }
           >
-            Decline transfer
+            Koppeling weigeren
           </Button>
         </div>
       )}
