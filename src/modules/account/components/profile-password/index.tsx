@@ -55,7 +55,7 @@ const ProfilePassword: React.FC<MyInformationProps> = ({ customer }) => {
             data-testid="new-password-input"
           />
           <Input
-            label="Confirm password"
+            label="Bevestig wachtwoord"
             type="password"
             name="confirm_password"
             required
