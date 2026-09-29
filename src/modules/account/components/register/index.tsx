@@ -78,7 +78,7 @@ const Register = ({ setCurrentView }: Props) => {
           </LocalizedClientLink>{" "}
           en de{" "}
           <LocalizedClientLink
-            href="/content/terms-of-use"
+            href="/content/algemene-voorwaarden"
             className="underline"
           >
             Gebruiksvoorwaarden
