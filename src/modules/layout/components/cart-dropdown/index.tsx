@@ -213,7 +213,7 @@ const CartDropdown = ({
                     <LocalizedClientLink href="/store">
                       <>
                         <span className="sr-only">Naar alle producten</span>
-                        <Button onClick={close}>Explore products</Button>
+                        <Button onClick={close}>Bekijk producten</Button>
                       </>
                     </LocalizedClientLink>
                   </div>
