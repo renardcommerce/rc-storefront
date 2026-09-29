@@ -71,7 +71,7 @@ const Register = ({ setCurrentView }: Props) => {
         <span className="text-center text-ui-fg-base text-small-regular mt-6">
           Door een account aan te maken, ga je akkoord met het{" "}
           <LocalizedClientLink
-            href="/content/privacy-policy"
+            href="/content/privacybeleid"
             className="underline"
           >
             Privacybeleid
