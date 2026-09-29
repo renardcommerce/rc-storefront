@@ -18,7 +18,7 @@ export default async function TransferPage({
         {success && (
           <>
             <Heading level="h1" className="text-xl text-zinc-900">
-              Order transfer declined!
+              Koppeling geweigerd!
             </Heading>
             <Text className="text-zinc-600">
               Transfer of order {id} has been successfully declined.
@@ -28,7 +28,7 @@ export default async function TransferPage({
         {!success && (
           <>
             <Text className="text-zinc-600">
-              There was an error declining the transfer. Please try again.
+              Er ging iets mis bij het weigeren. Probeer het opnieuw.
             </Text>
             {error && (
               <Text className="text-red-500">Error message: {error}</Text>

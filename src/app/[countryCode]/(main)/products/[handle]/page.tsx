@@ -4,6 +4,7 @@ import { listProducts } from "@lib/data/products"
 import { getRegion, listRegions } from "@lib/data/regions"
 import ProductTemplate from "@modules/products/templates"
 import { HttpTypes } from "@medusajs/types"
+import { getBaseURL } from "@lib/util/env"
 
 type Props = {
   params: Promise<{ countryCode: string; handle: string }>
@@ -87,14 +88,55 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     notFound()
   }
 
+  const description = metaDescription(product)
+
   return {
-    title: `${product.title} | Medusa Store`,
-    description: `${product.title}`,
+    title: `${product.title} | RC Choice`,
+    description,
+    alternates: {
+      canonical: `/${params.countryCode}/products/${handle}`,
+    },
     openGraph: {
-      title: `${product.title} | Medusa Store`,
-      description: `${product.title}`,
+      title: `${product.title} | RC Choice`,
+      description,
       images: product.thumbnail ? [product.thumbnail] : [],
     },
+  }
+}
+
+function metaDescription(product: HttpTypes.StoreProduct) {
+  const text = (product.description || product.subtitle || product.title || "")
+    .replace(/\s+/g, " ")
+    .trim()
+  return text.length > 155 ? `${text.slice(0, 152).trimEnd()}...` : text
+}
+
+function productJsonLd(product: HttpTypes.StoreProduct, countryCode: string) {
+  const variant = product.variants?.[0]
+  const price = variant?.calculated_price?.calculated_amount
+  const currency = variant?.calculated_price?.currency_code?.toUpperCase()
+  const ean = variant?.barcode || variant?.ean || undefined
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    description: metaDescription(product),
+    image: (product.images || []).map((i) => i.url).slice(0, 5),
+    sku: variant?.sku || undefined,
+    gtin13: ean,
+    brand: { "@type": "Brand", name: "RC Choice" },
+    offers:
+      price != null && currency
+        ? {
+            "@type": "Offer",
+            url: `${getBaseURL()}/${countryCode}/products/${product.handle}`,
+            price: Number(price).toFixed(2),
+            priceCurrency: currency,
+            availability: "https://schema.org/InStock",
+            itemCondition: "https://schema.org/NewCondition",
+          }
+        : undefined,
   }
 }
 
@@ -121,11 +163,21 @@ export default async function ProductPage(props: Props) {
   }
 
   return (
-    <ProductTemplate
-      product={pricedProduct}
-      region={region}
-      countryCode={params.countryCode}
-      images={images}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            productJsonLd(pricedProduct, params.countryCode)
+          ).replace(/</g, "\\u003c"),
+        }}
+      />
+      <ProductTemplate
+        product={pricedProduct}
+        region={region}
+        countryCode={params.countryCode}
+        images={images}
+      />
+    </>
   )
 }
