@@ -3,6 +3,7 @@
 import Back from "@modules/common/icons/back"
 import FastDelivery from "@modules/common/icons/fast-delivery"
 import Refresh from "@modules/common/icons/refresh"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 import Accordion from "./accordion"
 import { HttpTypes } from "@medusajs/types"
@@ -14,11 +15,11 @@ type ProductTabsProps = {
 const ProductTabs = ({ product }: ProductTabsProps) => {
   const tabs = [
     {
-      label: "Product Information",
+      label: "Productinformatie",
       component: <ProductInfoTab product={product} />,
     },
     {
-      label: "Shipping & Returns",
+      label: "Verzending & retourneren",
       component: <ShippingInfoTab />,
     },
   ]
@@ -42,35 +43,41 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
 }
 
 const ProductInfoTab = ({ product }: ProductTabsProps) => {
+  const ean = product.variants?.[0]?.barcode || product.variants?.[0]?.sku
+
   return (
     <div className="text-small-regular py-8">
       <div className="grid grid-cols-2 gap-x-8">
         <div className="flex flex-col gap-y-4">
           <div>
-            <span className="font-semibold">Material</span>
+            <span className="font-semibold">Merk</span>
+            <p>RC Choice</p>
+          </div>
+          <div>
+            <span className="font-semibold">EAN</span>
+            <p>{ean ? ean : "-"}</p>
+          </div>
+          <div>
+            <span className="font-semibold">Materiaal</span>
             <p>{product.material ? product.material : "-"}</p>
-          </div>
-          <div>
-            <span className="font-semibold">Country of origin</span>
-            <p>{product.origin_country ? product.origin_country : "-"}</p>
-          </div>
-          <div>
-            <span className="font-semibold">Type</span>
-            <p>{product.type ? product.type.value : "-"}</p>
           </div>
         </div>
         <div className="flex flex-col gap-y-4">
           <div>
-            <span className="font-semibold">Weight</span>
+            <span className="font-semibold">Gewicht</span>
             <p>{product.weight ? `${product.weight} g` : "-"}</p>
           </div>
           <div>
-            <span className="font-semibold">Dimensions</span>
+            <span className="font-semibold">Afmetingen verpakking</span>
             <p>
               {product.length && product.width && product.height
-                ? `${product.length}L x ${product.width}W x ${product.height}H`
+                ? `${product.length} x ${product.width} x ${product.height} mm`
                 : "-"}
             </p>
+          </div>
+          <div>
+            <span className="font-semibold">Land van herkomst</span>
+            <p>{product.origin_country ? product.origin_country.toUpperCase() : "-"}</p>
           </div>
         </div>
       </div>
@@ -85,31 +92,37 @@ const ShippingInfoTab = () => {
         <div className="flex items-start gap-x-2">
           <FastDelivery />
           <div>
-            <span className="font-semibold">Fast delivery</span>
+            <span className="font-semibold">Gratis verzending in Nederland</span>
             <p className="max-w-sm">
-              Your package will arrive in 3-5 business days at your pick up
-              location or in the comfort of your home.
-            </p>
-          </div>
-        </div>
-        <div className="flex items-start gap-x-2">
-          <Refresh />
-          <div>
-            <span className="font-semibold">Simple exchanges</span>
-            <p className="max-w-sm">
-              Is the fit not quite right? No worries - we&apos;ll exchange your
-              product for a new one.
+              Je bestelling wordt zorgvuldig verpakt en verzonden. Zodra je
+              pakket onderweg is, ontvang je een track &amp; trace-code.
             </p>
           </div>
         </div>
         <div className="flex items-start gap-x-2">
           <Back />
           <div>
-            <span className="font-semibold">Easy returns</span>
+            <span className="font-semibold">14 dagen bedenktijd</span>
             <p className="max-w-sm">
-              Just return your product and we&apos;ll refund your money. No
-              questions asked – we&apos;ll do our best to make sure your return
-              is hassle-free.
+              Niet tevreden? Je kunt je aankoop binnen 14 dagen na ontvangst
+              aanmelden voor retour.{" "}
+              <LocalizedClientLink href="/content/retourneren" className="underline">
+                Bekijk de retourvoorwaarden
+              </LocalizedClientLink>
+              .
+            </p>
+          </div>
+        </div>
+        <div className="flex items-start gap-x-2">
+          <Refresh />
+          <div>
+            <span className="font-semibold">Vragen?</span>
+            <p className="max-w-sm">
+              Twijfel je welke kabel je nodig hebt?{" "}
+              <LocalizedClientLink href="/content/contact" className="underline">
+                Neem contact met ons op
+              </LocalizedClientLink>
+              , we helpen je graag.
             </p>
           </div>
         </div>
