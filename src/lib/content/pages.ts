@@ -4,11 +4,11 @@
 export const COMPANY = {
   brand: "RC Choice",
   legalName: "Renard Commerce",
-  email: "", // klantenservice-mailadres (B4)
-  address: "", // bezoek-/correspondentieadres (B4)
+  email: "account@renardcommerce.com", // klantenservice-mailadres (B4)
+  address: "Zuideinde 10 A, 8428 HE Fochteloo", // bezoek-/correspondentieadres (B4)
   returnAddress: "", // retouradres (B4)
-  kvk: "", // KvK-nummer (B4)
-  vat: "", // btw-nummer (B4)
+  kvk: "80198961", // KvK-nummer (B4)
+  vat: "NL003405536B18", // btw-nummer (B4)
 }
 
 const fill = (v: string) => (v ? v : "wordt binnenkort aangevuld")
