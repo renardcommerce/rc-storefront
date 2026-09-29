@@ -5,7 +5,7 @@ import StoreTemplate from "@modules/store/templates"
 
 export const metadata: Metadata = {
   title: "Alle producten",
-  description: "Explore all of our products.",
+  description: "Bekijk alle RC Choice producten.",
 }
 
 type Params = {
