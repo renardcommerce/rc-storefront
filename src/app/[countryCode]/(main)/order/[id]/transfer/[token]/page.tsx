@@ -28,7 +28,7 @@ export default async function TransferPage({
         </Text>
         <Text className="text-zinc-600">
           Herken je dit verzoek niet? Dan hoef je
-          further action is required.
+          niets te doen.
         </Text>
         <div className="w-full h-px bg-zinc-200" />
         <TransferActions id={id} token={token} />
