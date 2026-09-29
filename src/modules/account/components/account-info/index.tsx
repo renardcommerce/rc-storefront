@@ -126,7 +126,7 @@ const AccountInfo = ({
                 type="submit"
                 data-testid="save-button"
               >
-                Save changes
+                Wijzigingen opslaan
               </Button>
             </div>
           </div>
