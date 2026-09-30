@@ -23,10 +23,10 @@ const ItemsTemplate = ({ cart }: ItemsTemplateProps) => {
             <Table.HeaderCell></Table.HeaderCell>
             <Table.HeaderCell>Aantal</Table.HeaderCell>
             <Table.HeaderCell className="hidden small:table-cell">
-              Prijs
+              Prijs (incl. btw)
             </Table.HeaderCell>
             <Table.HeaderCell className="!pr-0 text-right">
-              Totaal
+              Totaal (incl. btw)
             </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
