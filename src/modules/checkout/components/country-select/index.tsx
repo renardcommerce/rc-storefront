@@ -23,10 +23,13 @@ const innerRef = useRef<HTMLSelectElement>(null)
       return []
     }
 
-    return region.countries?.map((country) => ({
-      value: country.iso_2,
-      label: country.display_name,
-    }))
+    // Alleen Nederland, met Nederlands label (geen dubbele/Engelse namen).
+    return region.countries
+      ?.filter((country) => country.iso_2 === "nl")
+      .map((country) => ({
+        value: country.iso_2,
+        label: "Nederland",
+      }))
   }, [region])
 
   return (
