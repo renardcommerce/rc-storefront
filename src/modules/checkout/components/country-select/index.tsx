@@ -4,6 +4,7 @@ import NativeSelect, {
   NativeSelectProps,
 } from "@modules/common/components/native-select"
 import { HttpTypes } from "@medusajs/types"
+import { CHECKOUT_COUNTRIES } from "@lib/util/shipping"
 
 const CountrySelect = forwardRef<
   HTMLSelectElement,
@@ -23,10 +24,13 @@ const innerRef = useRef<HTMLSelectElement>(null)
       return []
     }
 
-    return region.countries?.map((country) => ({
-      value: country.iso_2,
-      label: country.display_name,
-    }))
+    // Alleen NL en BE, met Nederlandse labels; andere landen blijven verborgen.
+    return region.countries
+      ?.filter((country) => country.iso_2 && country.iso_2 in CHECKOUT_COUNTRIES)
+      .map((country) => ({
+        value: country.iso_2,
+        label: CHECKOUT_COUNTRIES[country.iso_2!],
+      }))
   }, [region])
 
   return (

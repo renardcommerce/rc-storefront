@@ -6,6 +6,7 @@ import CartTotals from "@modules/common/components/cart-totals"
 import Divider from "@modules/common/components/divider"
 import DiscountCode from "@modules/checkout/components/discount-code"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import FreeShippingNotice from "@modules/common/components/free-shipping-notice"
 import { HttpTypes } from "@medusajs/types"
 
 type SummaryProps = {
@@ -34,6 +35,10 @@ const Summary = ({ cart }: SummaryProps) => {
       </Heading>
       <DiscountCode cart={cart} />
       <Divider />
+      <FreeShippingNotice
+        itemTotal={cart.item_total}
+        currencyCode={cart.currency_code}
+      />
       <CartTotals totals={cart} />
       <LocalizedClientLink
         href={"/checkout?step=" + step}
