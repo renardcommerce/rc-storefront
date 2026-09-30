@@ -10,7 +10,7 @@ const CountrySelect = forwardRef<
   NativeSelectProps & {
     region?: HttpTypes.StoreRegion
   }
->(({ placeholder = "Land", region, defaultValue, ...props }, ref) => {
+>(({ placeholder = "Land", region, defaultValue, value, ...props }, ref) => {
 const innerRef = useRef<HTMLSelectElement>(null)
 
   useImperativeHandle<HTMLSelectElement | null, HTMLSelectElement | null>(
@@ -32,11 +32,20 @@ const innerRef = useRef<HTMLSelectElement>(null)
       }))
   }, [region])
 
+  // Opgeslagen adres met een ander land dan NL: val terug op NL, anders
+  // heeft de select geen passende optie en blijft hij leeg.
+  const toAvailable = <T,>(v: T): T | string => {
+    if (!v || !countryOptions?.length) return v
+    const known = countryOptions.some((o) => o.value === String(v).toLowerCase())
+    return known ? v : countryOptions[0].value!
+  }
+
   return (
     <NativeSelect
       ref={innerRef}
       placeholder={placeholder}
-      defaultValue={defaultValue}
+      defaultValue={toAvailable(defaultValue)}
+      value={value === undefined ? undefined : toAvailable(value)}
       {...props}
     >
       {countryOptions?.map(({ value, label }, index) => (
