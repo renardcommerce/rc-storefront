@@ -4,13 +4,14 @@ import NativeSelect, {
   NativeSelectProps,
 } from "@modules/common/components/native-select"
 import { HttpTypes } from "@medusajs/types"
+import { CHECKOUT_COUNTRIES } from "@lib/util/shipping"
 
 const CountrySelect = forwardRef<
   HTMLSelectElement,
   NativeSelectProps & {
     region?: HttpTypes.StoreRegion
   }
->(({ placeholder = "Land", region, defaultValue, value, ...props }, ref) => {
+>(({ placeholder = "Land", region, defaultValue, ...props }, ref) => {
 const innerRef = useRef<HTMLSelectElement>(null)
 
   useImperativeHandle<HTMLSelectElement | null, HTMLSelectElement | null>(
@@ -23,29 +24,20 @@ const innerRef = useRef<HTMLSelectElement>(null)
       return []
     }
 
-    // Alleen Nederland, met Nederlands label (geen dubbele/Engelse namen).
+    // Alleen NL en BE, met Nederlandse labels; andere landen blijven verborgen.
     return region.countries
-      ?.filter((country) => country.iso_2 === "nl")
+      ?.filter((country) => country.iso_2 && country.iso_2 in CHECKOUT_COUNTRIES)
       .map((country) => ({
         value: country.iso_2,
-        label: "Nederland",
+        label: CHECKOUT_COUNTRIES[country.iso_2!],
       }))
   }, [region])
-
-  // Opgeslagen adres met een ander land dan NL: val terug op NL, anders
-  // heeft de select geen passende optie en blijft hij leeg.
-  const toAvailable = <T,>(v: T): T | string => {
-    if (!v || !countryOptions?.length) return v
-    const known = countryOptions.some((o) => o.value === String(v).toLowerCase())
-    return known ? v : countryOptions[0].value!
-  }
 
   return (
     <NativeSelect
       ref={innerRef}
       placeholder={placeholder}
-      defaultValue={toAvailable(defaultValue)}
-      value={value === undefined ? undefined : toAvailable(value)}
+      defaultValue={defaultValue}
       {...props}
     >
       {countryOptions?.map(({ value, label }, index) => (
