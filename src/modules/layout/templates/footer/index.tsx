@@ -1,3 +1,4 @@
+import { FREE_SHIPPING_TEXT } from "@lib/util/shipping"
 import { listCategories } from "@lib/data/categories"
 import { Text, clx } from "@medusajs/ui"
 
@@ -30,8 +31,7 @@ export default async function Footer() {
               RC Choice
             </LocalizedClientLink>
             <Text className="txt-small text-ui-fg-subtle">
-              Kabels en adapters voor thuis en kantoor. Gratis verzending in
-              Nederland.
+              Kabels en adapters voor thuis en kantoor. {FREE_SHIPPING_TEXT}.
             </Text>
           </div>
           <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">

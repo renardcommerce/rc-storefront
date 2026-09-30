@@ -3,6 +3,9 @@
 // option in Medusa ("Standaard verzending (NL & BE)").
 export const FREE_SHIPPING_THRESHOLD = 20
 
+// Vaste tekst voor productpagina en footer.
+export const FREE_SHIPPING_TEXT = `Gratis verzending vanaf € ${FREE_SHIPPING_THRESHOLD} (NL & BE)`
+
 // Landen die in de checkout getoond worden, met NL-label.
 export const CHECKOUT_COUNTRIES: Record<string, string> = {
   nl: "Nederland",
