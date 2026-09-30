@@ -8,6 +8,7 @@ import { CheckCircleSolid, Loader } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Button, clx, Heading, Text } from "@medusajs/ui"
 import ErrorMessage from "@modules/checkout/components/error-message"
+import FreeShippingNotice from "@modules/common/components/free-shipping-notice"
 import Divider from "@modules/common/components/divider"
 import MedusaRadio from "@modules/common/components/radio"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
@@ -193,6 +194,12 @@ const Shipping: React.FC<ShippingProps> = ({
               </span>
             </div>
             <div data-testid="delivery-options-container">
+              <div className="pb-4">
+                <FreeShippingNotice
+                  itemTotal={cart.item_total}
+                  currencyCode={cart.currency_code}
+                />
+              </div>
               <div className="pb-8 md:pt-0 pt-2">
                 {hasPickupOptions && (
                   <RadioGroup

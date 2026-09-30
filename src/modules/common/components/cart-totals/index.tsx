@@ -1,6 +1,7 @@
 "use client"
 
 import { convertToLocale } from "@lib/util/money"
+import { getDisplayTotals } from "@lib/util/shipping"
 import React from "react"
 
 type CartTotalsProps = {
@@ -18,18 +19,13 @@ type CartTotalsProps = {
 }
 
 const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
-  const {
-    currency_code,
-    total,
-    tax_total,
-    original_item_total,
-    item_total,
-    shipping_total,
-    discount_total,
-  } = totals
+  const { currency_code, total, tax_total } = totals
 
-  // Alle bedragen incl. btw, zodat ze dezelfde weergave hebben als de regelprijzen.
-  const subtotalInclTax = original_item_total ?? item_total ?? 0
+  // Alles incl. btw en onderling sluitend (zie getDisplayTotals).
+  const display = getDisplayTotals(totals)
+  const subtotalInclTax = display.subtotal
+  const shipping_total = display.shipping
+  const discount_total = display.discount
 
   return (
     <div>
