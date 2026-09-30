@@ -22,8 +22,8 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
       <h2 className="text-base-semi">Besteloverzicht</h2>
       <div className="text-small-regular text-ui-fg-base my-2">
         <div className="flex items-center justify-between text-base-regular text-ui-fg-base mb-2">
-          <span>Subtotaal</span>
-          <span>{getAmount(order.subtotal)}</span>
+          <span>Subtotaal (incl. btw)</span>
+          <span>{getAmount(order.original_item_total ?? order.item_total)}</span>
         </div>
         <div className="flex flex-col gap-y-1">
           {order.discount_total > 0 && (
@@ -39,11 +39,11 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
             </div>
           )}
           <div className="flex items-center justify-between">
-            <span>Verzending</span>
+            <span>Verzending (incl. btw)</span>
             <span>{getAmount(order.shipping_total)}</span>
           </div>
           <div className="flex items-center justify-between">
-            <span>Btw</span>
+            <span>Waarvan btw</span>
             <span>{getAmount(order.tax_total)}</span>
           </div>
         </div>
