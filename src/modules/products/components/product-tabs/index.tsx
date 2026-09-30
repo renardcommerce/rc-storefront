@@ -5,6 +5,7 @@ import FastDelivery from "@modules/common/icons/fast-delivery"
 import Refresh from "@modules/common/icons/refresh"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
+import { FREE_SHIPPING_TEXT } from "@lib/util/shipping"
 import Accordion from "./accordion"
 import { HttpTypes } from "@medusajs/types"
 
@@ -92,7 +93,7 @@ const ShippingInfoTab = () => {
         <div className="flex items-start gap-x-2">
           <FastDelivery />
           <div>
-            <span className="font-semibold">Gratis verzending in Nederland</span>
+            <span className="font-semibold">{FREE_SHIPPING_TEXT}</span>
             <p className="max-w-sm">
               Je bestelling wordt zorgvuldig verpakt en verzonden. Zodra je
               pakket onderweg is, ontvang je een track &amp; trace-code.
