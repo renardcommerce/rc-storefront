@@ -1,17 +1,21 @@
 // Content voor klantenservice- en juridische pagina's (route: /[countryCode]/content/[slug]).
 // CONCEPT — Renard controleert vóór livegang. Bedrijfsgegevens staan alleen in COMPANY.
 
+// Zet op false (of verwijder het label in content/[slug]/page.tsx) zodra de teksten juridisch zijn gecontroleerd.
+export const SHOW_CONCEPT_LABEL = true
+export const CONCEPT_LABEL = "CONCEPT – nog juridisch te controleren"
+
 export const COMPANY = {
-  brand: "RC Choice",
+  brand: "RC CHOICE", // handelsnaam webshop
   legalName: "Renard Commerce",
-  email: "service@renardcommerce.com", // klantenservice-mailadres (B4)
-  address: "Zuideinde 10 A, 8428 HE Fochteloo, Nederland", // bezoek-/correspondentieadres (B4)
-  returnAddress: "", // retouradres (B4)
-  kvk: "80198961", // KvK-nummer (B4)
-  vat: "NL003405536B18", // btw-nummer (B4)
+  email: "service@renardcommerce.com",
+  address: "Zuideinde 10-A, 8428 HE Fochteloo, Friesland, Nederland",
+  kvk: "80198961",
+  vat: "NL003405536B18",
 }
 
-const fill = (v: string) => (v ? v : "wordt binnenkort aangevuld")
+// Vul in zodra de levertijd vaststaat; verschijnt nu als invulplek in de teksten.
+const LEVERTIJD = "[LEVERTIJD]"
 
 export type ContentBlock =
   | { type: "h"; text: string }
@@ -27,112 +31,125 @@ export type ContentPage = {
 const companyBlock: ContentBlock = {
   type: "ul",
   items: [
-    `${COMPANY.brand} is een merk van ${COMPANY.legalName}`,
-    `E-mail: ${fill(COMPANY.email)}`,
-    `Adres: ${fill(COMPANY.address)}`,
-    `KvK-nummer: ${fill(COMPANY.kvk)}`,
-    `Btw-nummer: ${fill(COMPANY.vat)}`,
+    `${COMPANY.brand} is de handelsnaam van ${COMPANY.legalName}`,
+    `Adres: ${COMPANY.address}`,
+    `E-mail: ${COMPANY.email}`,
+    `KvK-nummer: ${COMPANY.kvk}`,
+    `Btw-nummer: ${COMPANY.vat}`,
   ],
 }
 
+const SHIPPING_TEXT = "Verzending kost € 6,95 (incl. btw). Vanaf een bestelbedrag van € 20 is verzending gratis. Dit geldt voor bestellingen in Nederland en België."
+
 export const CONTENT_PAGES: Record<string, ContentPage> = {
-  klantenservice: {
-    title: "Klantenservice",
-    description: "Antwoorden op veelgestelde vragen over bestellen, verzending en retourneren.",
+  faq: {
+    title: "Veelgestelde vragen",
+    description: "Antwoorden op veelgestelde vragen over bestellen, verzending, betalen en retourneren.",
     blocks: [
       { type: "p", text: "Hier vind je antwoorden op de meest gestelde vragen. Staat je vraag er niet tussen? Neem dan contact met ons op, we helpen je graag." },
       { type: "h", text: "Wat kost verzending?" },
-      { type: "p", text: "Verzending binnen Nederland is altijd gratis, zonder minimaal bestelbedrag." },
-      { type: "h", text: "Wanneer wordt mijn bestelling verzonden?" },
-      { type: "p", text: "We verwerken bestellingen zo snel mogelijk. Zodra je pakket onderweg is, ontvang je een e-mail met een track & trace-code." },
+      { type: "p", text: SHIPPING_TEXT },
+      { type: "h", text: "Naar welke landen leveren jullie?" },
+      { type: "p", text: "We leveren aan consumenten in Nederland en België." },
+      { type: "h", text: "Wat is de levertijd?" },
+      { type: "p", text: `De levertijd is ${LEVERTIJD}. Zodra je pakket onderweg is, ontvang je bericht van ons.` },
       { type: "h", text: "Hoe kan ik betalen?" },
-      { type: "p", text: "Je betaalt veilig online via onze betaalpartner, onder andere met iDEAL. De beschikbare betaalmethoden zie je bij het afrekenen." },
+      { type: "p", text: "Je kunt betalen met iDEAL en andere gangbare methoden. Welke methoden beschikbaar zijn, zie je bij het afrekenen." },
       { type: "h", text: "Kan ik mijn bestelling retourneren?" },
-      { type: "p", text: "Ja, en retourneren is gratis. Je hebt 14 dagen bedenktijd na ontvangst. Lees op de pagina Retourneren hoe je een retour aanmeldt." },
-      { type: "h", text: "Welke kabel heb ik nodig?" },
-      { type: "p", text: "Controleer welke aansluitingen je apparaten hebben (bijvoorbeeld HDMI, DisplayPort, USB-C of RJ45) en welke lengte je nodig hebt. Twijfel je? Stuur ons een bericht met de apparaten die je wilt verbinden." },
-      { type: "h", text: "Mijn product is defect of beschadigd. Wat nu?" },
-      { type: "p", text: "Neem binnen redelijke tijd contact met ons op en stuur indien mogelijk een foto mee. We zorgen samen met jou voor een passende oplossing, zoals vervanging of terugbetaling." },
+      { type: "p", text: "Ja. Je hebt 14 dagen bedenktijd vanaf ontvangst van je bestelling. De kosten van het terugsturen zijn voor jouw rekening. Op de pagina Retourneren & herroeping lees je precies hoe het werkt." },
+      { type: "h", text: "Wat als mijn product defect is?" },
+      { type: "p", text: "Neem contact met ons op, het liefst met je bestelnummer en een foto. Je hebt volgens het Nederlandse recht wettelijke garantie: een product moet werken zoals je redelijkerwijs mag verwachten." },
     ],
   },
   contact: {
     title: "Contact",
-    description: "Neem contact op met de klantenservice van RC Choice.",
+    description: "Neem contact op met RC CHOICE.",
     blocks: [
-      { type: "p", text: "Heb je een vraag over een product of je bestelling? Stuur ons een e-mail. We reageren op werkdagen zo snel mogelijk, uiterlijk binnen twee werkdagen." },
-      { type: "p", text: "Vermeld bij vragen over een bestelling altijd je bestelnummer." },
+      { type: "p", text: "Heb je een vraag over een product of je bestelling? Stuur ons een e-mail. Vermeld bij vragen over een bestelling altijd je bestelnummer." },
       { type: "h", text: "Gegevens" },
       companyBlock,
     ],
   },
   verzending: {
     title: "Verzending & levering",
-    description: "Alles over verzendkosten, levering en track & trace.",
+    description: "Alles over verzendkosten en levering bij RC CHOICE.",
     blocks: [
       { type: "h", text: "Verzendkosten" },
-      { type: "p", text: "Verzending binnen Nederland is gratis, ongeacht het bestelbedrag. Op dit moment leveren we alleen in Nederland." },
-      { type: "h", text: "Levering" },
-      { type: "p", text: "We verwerken je bestelling zo snel mogelijk na betaling. Je ontvangt een e-mail met een track & trace-code zodra je pakket onderweg is." },
-      { type: "h", text: "Niet thuis?" },
-      { type: "p", text: "Ben je niet thuis, dan volgt de vervoerder zijn gebruikelijke werkwijze, zoals bezorgen bij de buren, een tweede bezorgpoging of afleveren bij een afhaalpunt. Via de track & trace-link zie je de actuele status." },
+      { type: "p", text: SHIPPING_TEXT },
+      { type: "h", text: "Leveringsgebied" },
+      { type: "p", text: "We leveren aan consumenten in Nederland en België." },
+      { type: "h", text: "Levertijd" },
+      { type: "p", text: `De levertijd is ${LEVERTIJD}.` },
       { type: "h", text: "Pakket beschadigd of niet ontvangen?" },
-      { type: "p", text: "Neem contact met ons op, dan zoeken we het voor je uit." },
+      { type: "p", text: `Neem contact met ons op via ${COMPANY.email}, dan zoeken we het voor je uit.` },
     ],
   },
   retourneren: {
-    title: "Retourneren",
-    description: "Zo werkt retourneren bij RC Choice: 14 dagen bedenktijd en gratis retour.",
+    title: "Retourneren & herroeping",
+    description: "14 dagen bedenktijd, hoe je een retour aanmeldt en het modelformulier voor herroeping.",
     blocks: [
       { type: "h", text: "14 dagen bedenktijd" },
-      { type: "p", text: "Je hebt het recht om je aankoop binnen 14 dagen na ontvangst zonder opgave van reden te herroepen. Na je melding heb je nog 14 dagen om het product terug te sturen." },
-      { type: "h", text: "Zo meld je een retour aan" },
+      { type: "p", text: "Je hebt het recht om een aankoop binnen 14 dagen na ontvangst zonder opgave van reden te herroepen. De termijn begint op de dag nadat jij (of een door jou aangewezen derde) het product hebt ontvangen. Bestel je meerdere producten in één bestelling die apart worden geleverd, dan gaat de termijn in na ontvangst van het laatste product." },
+      { type: "h", text: "Zo herroep je" },
       { type: "ul", items: [
-        "Stuur ons een e-mail met je bestelnummer en het product dat je wilt retourneren.",
-        "Je ontvangt van ons de retourinstructies en het retouradres.",
-        "Verpak het product zorgvuldig, bij voorkeur in de originele verpakking.",
-        "Stuur het pakket binnen 14 dagen na je melding terug.",
+        `Laat ons binnen de bedenktijd ondubbelzinnig weten dat je de overeenkomst herroept, bijvoorbeeld per e-mail naar ${COMPANY.email} of per post naar ${COMPANY.address}. Je mag hiervoor het modelformulier hieronder gebruiken, maar dat hoeft niet.`,
+        "Vermeld je bestelnummer en het product (of de producten) waarom het gaat.",
+        "Stuur het product binnen 14 dagen na je herroeping terug naar het adres dat wij je in antwoord op je melding doorgeven.",
       ] },
-      { type: "h", text: "Voorwaarden" },
-      { type: "ul", items: [
-        "Behandel het product tijdens de bedenktijd zoals je dat in een winkel zou doen: je mag het uitpakken en bekijken om te beoordelen of je het wilt houden.",
-        "Is het product meer gebruikt dan nodig of beschadigd, dan kunnen we een waardevermindering in rekening brengen.",
-        "Retourneren is gratis: de kosten van het terugsturen zijn voor onze rekening.",
-      ] },
+      { type: "h", text: "Kosten van het retourneren" },
+      { type: "p", text: "De kosten van het terugsturen zijn voor jouw rekening." },
       { type: "h", text: "Terugbetaling" },
-      { type: "p", text: "We betalen het aankoopbedrag binnen 14 dagen na je herroeping terug, via dezelfde betaalmethode. We mogen wachten met terugbetalen tot we het product hebben ontvangen of je hebt aangetoond dat je het hebt teruggestuurd." },
+      { type: "p", text: "Na je herroeping betalen we het aankoopbedrag, inclusief de kosten voor standaardverzending, binnen 14 dagen terug, via dezelfde betaalmethode als waarmee je hebt betaald. We mogen wachten met terugbetalen tot we het product hebben ontvangen of je hebt aangetoond dat je het hebt teruggestuurd, wat eerder is. Heb je gekozen voor een andere verzendwijze dan de goedkoopste standaardverzending die wij aanbieden, dan betalen we de extra kosten daarvan niet terug." },
+      { type: "h", text: "Staat van het product" },
+      { type: "p", text: "Je mag het product uitpakken en bekijken om te beoordelen of je het wilt houden, zoals je dat ook in een winkel zou doen. Is het product meer gebruikt of behandeld dan daarvoor nodig is, dan ben je aansprakelijk voor de waardevermindering. Stuur het product bij voorkeur terug in de originele verpakking." },
       { type: "h", text: "Defect product" },
-      { type: "p", text: "Ontvang je een defect of verkeerd product? Neem contact met ons op. Je hebt altijd recht op een product dat werkt zoals je mag verwachten (wettelijke garantie)." },
+      { type: "p", text: "Ontvang je een defect of verkeerd product? Neem contact met ons op. Je hebt volgens het Nederlandse recht altijd recht op een product dat werkt zoals je redelijkerwijs mag verwachten (wettelijke garantie)." },
+      { type: "h", text: "Modelformulier voor herroeping" },
+      { type: "p", text: "Wil je de overeenkomst herroepen, vul dan dit formulier in en stuur het terug. Je hoeft dit formulier niet te gebruiken." },
+      { type: "ul", items: [
+        `Aan: ${COMPANY.legalName}, ${COMPANY.address}, ${COMPANY.email}`,
+        "Ik/wij (*) deel/delen u hierbij mede dat ik/wij (*) onze overeenkomst betreffende de verkoop van de volgende producten herroep/herroepen (*): [product(en)]",
+        "Besteld op (*) / ontvangen op (*): [datum]",
+        "Bestelnummer: [bestelnummer]",
+        "Naam consument(en): [naam]",
+        "Adres consument(en): [adres]",
+        "Handtekening van consument(en) (alleen wanneer dit formulier op papier wordt ingediend): [handtekening]",
+        "Datum: [datum]",
+      ] },
+      { type: "p", text: "(*) Doorhalen wat niet van toepassing is." },
     ],
   },
   "algemene-voorwaarden": {
     title: "Algemene voorwaarden",
-    description: "De algemene voorwaarden van RC Choice.",
+    description: "De algemene voorwaarden van RC CHOICE.",
     blocks: [
       { type: "h", text: "1. Wie zijn wij" },
       companyBlock,
       { type: "h", text: "2. Toepasselijkheid" },
-      { type: "p", text: "Deze voorwaarden gelden voor elk aanbod van RC Choice en voor elke overeenkomst die via deze webshop tot stand komt. Je kunt deze voorwaarden altijd opslaan of printen." },
+      { type: "p", text: "Deze voorwaarden gelden voor elk aanbod van RC CHOICE en voor elke overeenkomst die via deze webshop met consumenten tot stand komt. Je kunt deze voorwaarden altijd opslaan of printen." },
       { type: "h", text: "3. Aanbod en prijzen" },
-      { type: "p", text: "Alle prijzen zijn in euro's en inclusief 21% btw. Verzending binnen Nederland is gratis. Kennelijke vergissingen of fouten in het aanbod binden ons niet." },
-      { type: "h", text: "4. De overeenkomst" },
-      { type: "p", text: "De overeenkomst komt tot stand zodra je je bestelling hebt geplaatst en betaald. Je ontvangt hiervan een bevestiging per e-mail. We mogen een bestelling weigeren als daar een gegronde reden voor is, bijvoorbeeld als een product niet meer leverbaar is; je ontvangt dan je geld terug." },
-      { type: "h", text: "5. Betaling" },
-      { type: "p", text: "Je betaalt bij het plaatsen van je bestelling via een van de aangeboden betaalmethoden." },
-      { type: "h", text: "6. Levering" },
-      { type: "p", text: "We leveren op het adres dat je bij je bestelling opgeeft. We verzenden zo snel mogelijk en uiterlijk binnen 30 dagen, tenzij anders afgesproken. Kunnen we niet binnen die termijn leveren, dan laten we dat weten en mag je de bestelling kosteloos annuleren. Het risico van beschadiging of verlies gaat op jou over op het moment dat je het product ontvangt." },
-      { type: "h", text: "7. Herroepingsrecht" },
-      { type: "p", text: "Je kunt je aankoop binnen 14 dagen na ontvangst zonder opgave van reden herroepen. De werkwijze en voorwaarden staan op de pagina Retourneren." },
-      { type: "h", text: "8. Garantie" },
-      { type: "p", text: "Onze producten voldoen aan de overeenkomst en aan wat je redelijkerwijs mag verwachten. Je wettelijke rechten blijven altijd van kracht." },
-      { type: "h", text: "9. Klachten" },
-      { type: "p", text: "Heb je een klacht, meld die dan binnen redelijke tijd nadat je het probleem hebt ontdekt, bij voorkeur per e-mail. We reageren binnen 14 dagen." },
-      { type: "h", text: "10. Toepasselijk recht" },
-      { type: "p", text: "Op deze voorwaarden en alle overeenkomsten is Nederlands recht van toepassing." },
+      { type: "p", text: "Alle prijzen zijn in euro's en inclusief btw. Kennelijke vergissingen of fouten in het aanbod binden ons niet." },
+      { type: "h", text: "4. Verzendkosten" },
+      { type: "p", text: SHIPPING_TEXT },
+      { type: "h", text: "5. De overeenkomst" },
+      { type: "p", text: "De overeenkomst komt tot stand zodra je je bestelling hebt geplaatst. Je ontvangt hiervan een bevestiging per e-mail. We mogen een bestelling weigeren als daar een gegronde reden voor is, bijvoorbeeld als een product niet meer leverbaar is; reeds betaalde bedragen betalen we dan terug." },
+      { type: "h", text: "6. Betaling" },
+      { type: "p", text: "Je betaalt bij het plaatsen van je bestelling met iDEAL of een andere gangbare betaalmethode die bij het afrekenen wordt aangeboden." },
+      { type: "h", text: "7. Levering" },
+      { type: "p", text: `We leveren aan consumenten in Nederland en België, op het adres dat je bij je bestelling opgeeft. De levertijd is ${LEVERTIJD}. Kunnen we niet binnen de afgesproken of wettelijke termijn leveren, dan laten we dat weten. Het risico van beschadiging of verlies gaat op jou over op het moment dat je het product ontvangt.` },
+      { type: "h", text: "8. Herroepingsrecht" },
+      { type: "p", text: "Je kunt je aankoop binnen 14 dagen na ontvangst zonder opgave van reden herroepen. De kosten van het terugsturen zijn voor jouw rekening. De werkwijze en het modelformulier staan op de pagina Retourneren & herroeping." },
+      { type: "h", text: "9. Garantie" },
+      { type: "p", text: "Onze producten voldoen aan de overeenkomst en aan wat je redelijkerwijs mag verwachten. Je wettelijke garantie volgens het Nederlandse recht blijft altijd van kracht." },
+      { type: "h", text: "10. Klachten" },
+      { type: "p", text: `Heb je een klacht, meld die dan zo snel mogelijk nadat je het probleem hebt ontdekt, bij voorkeur per e-mail naar ${COMPANY.email}.` },
+      { type: "h", text: "11. Toepasselijk recht" },
+      { type: "p", text: "Op deze voorwaarden en alle overeenkomsten is Nederlands recht van toepassing. Dwingende consumentenbescherming in het land waar je woont blijft van kracht." },
     ],
   },
   privacybeleid: {
     title: "Privacybeleid",
-    description: "Hoe RC Choice omgaat met je persoonsgegevens.",
+    description: "Hoe RC CHOICE omgaat met je persoonsgegevens.",
     blocks: [
       { type: "p", text: "We gaan zorgvuldig om met je persoonsgegevens en houden ons aan de Algemene verordening gegevensbescherming (AVG)." },
       { type: "h", text: "Verwerkingsverantwoordelijke" },
@@ -147,18 +164,18 @@ export const CONTENT_PAGES: Record<string, ContentPage> = {
       { type: "h", text: "Waarvoor we je gegevens gebruiken" },
       { type: "ul", items: [
         "Je bestelling verwerken, verzenden en betalingen afhandelen",
-        "Je informeren over je bestelling (bevestiging, verzending, track & trace)",
+        "Je informeren over je bestelling",
         "Je vragen, retouren en klachten afhandelen",
         "Voldoen aan wettelijke verplichtingen, zoals de fiscale bewaarplicht",
       ] },
       { type: "h", text: "Hoe lang we gegevens bewaren" },
-      { type: "p", text: "We bewaren gegevens niet langer dan nodig. Bestel- en factuurgegevens bewaren we 7 jaar vanwege de fiscale bewaarplicht. Je account kun je laten verwijderen." },
+      { type: "p", text: "We bewaren gegevens niet langer dan nodig. Bestel- en factuurgegevens bewaren we 7 jaar vanwege de fiscale bewaarplicht." },
       { type: "h", text: "Met wie we gegevens delen" },
-      { type: "p", text: "We delen alleen gegevens die nodig zijn met partijen die ons helpen de webshop te laten werken: onze hostingpartij (servers in de EU), betaalprovider, fulfilment- en verzendpartner en e-mailprovider. Met hen maken we afspraken over de beveiliging van je gegevens. We verkopen je gegevens nooit." },
+      { type: "p", text: "We delen alleen gegevens die nodig zijn met partijen die ons helpen de webshop te laten werken, zoals onze betaalprovider, verzendpartners en hosting- en e-mailprovider. We verkopen je gegevens niet." },
       { type: "h", text: "Cookies" },
-      { type: "p", text: "We gebruiken alleen functionele cookies die nodig zijn om de webshop te laten werken, bijvoorbeeld voor je winkelwagen en om ingelogd te blijven. We gebruiken geen tracking- of advertentiecookies." },
+      { type: "p", text: "We gebruiken cookies die nodig zijn om de webshop te laten werken, bijvoorbeeld voor je winkelwagen en om ingelogd te blijven." },
       { type: "h", text: "Jouw rechten" },
-      { type: "p", text: "Je hebt het recht om je gegevens in te zien, te laten corrigeren of te laten verwijderen, en om bezwaar te maken tegen het gebruik ervan. Stuur hiervoor een e-mail. Ben je niet tevreden over hoe we met je gegevens omgaan, dan kun je een klacht indienen bij de Autoriteit Persoonsgegevens." },
+      { type: "p", text: `Je hebt het recht om je gegevens in te zien, te laten corrigeren of te laten verwijderen, en om bezwaar te maken tegen het gebruik ervan. Stuur hiervoor een e-mail naar ${COMPANY.email}. Ben je niet tevreden over hoe we met je gegevens omgaan, dan kun je een klacht indienen bij de Autoriteit Persoonsgegevens.` },
     ],
   },
 }

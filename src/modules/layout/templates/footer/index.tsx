@@ -5,10 +5,10 @@ import { Text, clx } from "@medusajs/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 const serviceLinks = [
-  { name: "Klantenservice", href: "/content/klantenservice" },
+  { name: "Veelgestelde vragen", href: "/content/faq" },
   { name: "Contact", href: "/content/contact" },
   { name: "Verzending & levering", href: "/content/verzending" },
-  { name: "Retourneren", href: "/content/retourneren" },
+  { name: "Retourneren & herroeping", href: "/content/retourneren" },
 ]
 
 const legalLinks = [
