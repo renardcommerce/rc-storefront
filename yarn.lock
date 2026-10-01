@@ -512,6 +512,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource-variable/montserrat@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "@fontsource-variable/montserrat@npm:5.3.0"
+  checksum: 10/237f64c164b1355acd1c742d59a29b47027594f8d6efd95e26f2b755fc817669671dbca3fc32f4486df559fb8ffd00ddc6537afc9910712874b4c34fa7a95a3f
+  languageName: node
+  linkType: hard
+
 "@formatjs/ecma402-abstract@npm:2.3.6":
   version: 2.3.6
   resolution: "@formatjs/ecma402-abstract@npm:2.3.6"
@@ -7362,6 +7369,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lucide-react@npm:^1.49.0":
+  version: 1.49.0
+  resolution: "lucide-react@npm:1.49.0"
+  peerDependencies:
+    "@types/react": "*"
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10/97325d315945f28c72562842b94ccbf4dc590cd2f6c48fb7041caa61c1184fa81dd11ee57fd5c7438c48bd3d74c73638731b407b795e6b70c95caa839ebd40af
+  languageName: node
+  linkType: hard
+
 "make-dir@npm:^3.0.2, make-dir@npm:^3.1.0":
   version: 3.1.0
   resolution: "make-dir@npm:3.1.0"
@@ -7402,6 +7422,7 @@ __metadata:
   resolution: "medusa-next@workspace:."
   dependencies:
     "@babel/core": "npm:^7.17.5"
+    "@fontsource-variable/montserrat": "npm:^5.3.0"
     "@headlessui/react": "npm:^2.2.0"
     "@medusajs/icons": "npm:latest"
     "@medusajs/js-sdk": "npm:latest"
@@ -7423,6 +7444,7 @@ __metadata:
     eslint: "npm:8.10.0"
     eslint-config-next: "npm:15.0.8"
     lodash: "npm:^4.17.21"
+    lucide-react: "npm:^1.49.0"
     next: "npm:15.3.9"
     pg: "npm:^8.11.3"
     postcss: "npm:^8.4.8"
