@@ -81,7 +81,7 @@ export const CONTENT_PAGES: Record<string, ContentPage> = {
       { type: "h", text: "Levertijd" },
       { type: "p", text: `De levertijd is ${LEVERTIJD}.` },
       { type: "h", text: "Pakket beschadigd of niet ontvangen?" },
-      { type: "p", text: "Neem contact met ons op via service@renardcommerce.com, dan zoeken we het voor je uit." },
+      { type: "p", text: `Neem contact met ons op via ${COMPANY.email}, dan zoeken we het voor je uit.` },
     ],
   },
   retourneren: {
