@@ -21,6 +21,12 @@ module.exports = {
         padding: "padding-top padding-right padding-bottom padding-left",
       },
       colors: {
+        // RC CHOICE-palet. LET OP: hexwaarden zijn een voorstel, nog te
+        // bevestigen tegen de merkregels van Renard (staan niet in de repo).
+        paper: "#FAF8F3",
+        bone: "#EDE8DC",
+        gold: "#C9A24B",
+        ink: "#111317",
         grey: {
           0: "#FFFFFF",
           5: "#F9FAFB",
@@ -60,7 +66,8 @@ module.exports = {
       },
       fontFamily: {
         sans: [
-          "Inter",
+          "Montserrat Variable",
+          "Montserrat",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
