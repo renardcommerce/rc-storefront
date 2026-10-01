@@ -45,9 +45,9 @@ const PaymentDetails = ({ order }: PaymentDetailsProps) => {
                     : `${convertToLocale({
                         amount: payment.amount,
                         currency_code: order.currency_code,
-                      })} paid at ${new Date(
+                      })} betaald op ${new Date(
                         payment.created_at ?? ""
-                      ).toLocaleString()}`}
+                      ).toLocaleString("nl-NL")}`}
                 </Text>
               </div>
             </div>

@@ -64,7 +64,7 @@ const ProfileName: React.FC<MyInformationProps> = ({ customer }) => {
             data-testid="first-name-input"
           />
           <Input
-            label="Last name"
+            label="Achternaam"
             name="last_name"
             required
             defaultValue={customer.last_name ?? ""}

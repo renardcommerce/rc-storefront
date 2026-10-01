@@ -23,7 +23,7 @@ export const listProducts = async ({
   queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductListParams
 }> => {
   if (!countryCode && !regionId) {
-    throw new Error("Country code or region ID is required")
+    throw new Error("Landcode of regio-ID is verplicht")
   }
 
   const limit = queryParams?.limit || 12

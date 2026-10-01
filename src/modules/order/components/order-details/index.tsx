@@ -6,8 +6,34 @@ type OrderDetailsProps = {
   showStatus?: boolean
 }
 
+const STATUS_LABELS: Record<string, string> = {
+  // bezorgstatus
+  not_fulfilled: "Nog niet verwerkt",
+  partially_fulfilled: "Gedeeltelijk verwerkt",
+  fulfilled: "Verwerkt",
+  partially_shipped: "Gedeeltelijk verzonden",
+  shipped: "Verzonden",
+  partially_delivered: "Gedeeltelijk bezorgd",
+  delivered: "Bezorgd",
+  canceled: "Geannuleerd",
+  // betaalstatus
+  not_paid: "Niet betaald",
+  awaiting: "In afwachting",
+  authorized: "Goedgekeurd",
+  partially_authorized: "Gedeeltelijk goedgekeurd",
+  captured: "Betaald",
+  partially_captured: "Gedeeltelijk betaald",
+  partially_refunded: "Gedeeltelijk terugbetaald",
+  refunded: "Terugbetaald",
+  requires_action: "Actie vereist",
+}
+
 const OrderDetails = ({ order, showStatus }: OrderDetailsProps) => {
   const formatStatus = (str: string) => {
+    if (STATUS_LABELS[str]) {
+      return STATUS_LABELS[str]
+    }
+
     const formatted = str.split("_").join(" ")
 
     return formatted.slice(0, 1).toUpperCase() + formatted.slice(1)
