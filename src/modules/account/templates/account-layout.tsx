@@ -26,12 +26,12 @@ const AccountLayout: React.FC<AccountLayoutProps> = ({
             <h3 className="text-xl-semi mb-4">Vragen?</h3>
             <span className="txt-medium">
               Antwoorden op veelgestelde vragen vind je op onze
-              klantenservicepagina.
+              pagina met veelgestelde vragen.
             </span>
           </div>
           <div>
-            <UnderlineLink href="/content/klantenservice">
-              Klantenservice
+            <UnderlineLink href="/content/faq">
+              Veelgestelde vragen
             </UnderlineLink>
           </div>
         </div>

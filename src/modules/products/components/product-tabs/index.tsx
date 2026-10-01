@@ -103,10 +103,10 @@ const ShippingInfoTab = () => {
         <div className="flex items-start gap-x-2">
           <Back />
           <div>
-            <span className="font-semibold">Gratis retourneren binnen 14 dagen</span>
+            <span className="font-semibold">14 dagen bedenktijd</span>
             <p className="max-w-sm">
               Niet tevreden? Je kunt je aankoop binnen 14 dagen na ontvangst
-              aanmelden voor retour.{" "}
+              herroepen. De kosten van het terugsturen zijn voor jouw rekening.{" "}
               <LocalizedClientLink href="/content/retourneren" className="underline">
                 Bekijk de retourvoorwaarden
               </LocalizedClientLink>

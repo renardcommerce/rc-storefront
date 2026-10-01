@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
-import { CONTENT_PAGES } from "@lib/content/pages"
+import { CONCEPT_LABEL, CONTENT_PAGES, SHOW_CONCEPT_LABEL } from "@lib/content/pages"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 type Props = {
@@ -33,6 +33,14 @@ export default async function ContentPage(props: Props) {
   return (
     <div className="content-container py-12 small:py-16" data-testid="content-page">
       <div className="max-w-2xl mx-auto flex flex-col gap-y-4 text-base-regular text-ui-fg-base">
+        {SHOW_CONCEPT_LABEL && (
+          <div
+            className="border border-ui-border-base bg-ui-bg-subtle rounded-rounded px-4 py-2 txt-small-plus uppercase text-ui-fg-base"
+            data-testid="concept-label"
+          >
+            {CONCEPT_LABEL}
+          </div>
+        )}
         <h1 className="text-2xl-semi mb-2">{page.title}</h1>
         {page.blocks.map((block, i) => {
           if (block.type === "h") {

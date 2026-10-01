@@ -2,6 +2,7 @@
 
 import { Heading, Text, clx } from "@medusajs/ui"
 
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import PaymentButton from "../payment-button"
 import { useSearchParams } from "next/navigation"
 
@@ -39,9 +40,31 @@ const Review = ({ cart }: { cart: any }) => {
             <div className="w-full">
               <Text className="txt-medium-plus text-ui-fg-base mb-1">
                 Door op de knop Bestelling plaatsen te klikken, bevestig je dat
-                je onze Gebruiksvoorwaarden, Verkoopvoorwaarden en
-                Retourbeleid hebt gelezen, begrijpt en accepteert, en erkent
-                dat je het Privacybeleid van RC Choice hebt gelezen.
+                je onze{" "}
+                <LocalizedClientLink
+                  href="/content/algemene-voorwaarden"
+                  className="underline"
+                  target="_blank"
+                >
+                  Algemene voorwaarden
+                </LocalizedClientLink>{" "}
+                en het{" "}
+                <LocalizedClientLink
+                  href="/content/retourneren"
+                  className="underline"
+                  target="_blank"
+                >
+                  Retourbeleid
+                </LocalizedClientLink>{" "}
+                hebt gelezen en accepteert, en dat je het{" "}
+                <LocalizedClientLink
+                  href="/content/privacybeleid"
+                  className="underline"
+                  target="_blank"
+                >
+                  Privacybeleid
+                </LocalizedClientLink>{" "}
+                van RC CHOICE hebt gelezen.
               </Text>
             </div>
           </div>
