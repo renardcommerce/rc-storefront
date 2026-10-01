@@ -14,9 +14,9 @@ export default function medusaError(error: any): never {
     throw new Error(message.charAt(0).toUpperCase() + message.slice(1) + ".")
   } else if (error.request) {
     // The request was made but no response was received
-    throw new Error("No response received: " + error.request)
+    throw new Error("Geen reactie van de server ontvangen: " + error.request)
   } else {
     // Something happened in setting up the request that triggered an Error
-    throw new Error("Error setting up the request: " + error.message)
+    throw new Error("Fout bij het voorbereiden van het verzoek: " + error.message)
   }
 }
