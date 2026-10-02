@@ -1,39 +1,41 @@
 import { HttpTypes } from "@medusajs/types"
-import { Container } from "@medusajs/ui"
 import Image from "next/image"
 
 type ImageGalleryProps = {
   images: HttpTypes.StoreProductImage[]
+  productTitle?: string
 }
 
-const ImageGallery = ({ images }: ImageGalleryProps) => {
+// Afbeeldingen (foto's én infographics) worden op natuurlijke verhouding
+// getoond: geen vaste aspect-ratio, dus geen lege witte vlakken.
+const ImageGallery = ({ images, productTitle }: ImageGalleryProps) => {
+  const visible = images.filter((image) => !!image.url)
+
   return (
-    <div className="flex items-start relative">
-      <div className="flex flex-col flex-1 small:mx-16 gap-y-4">
-        {images.map((image, index) => {
-          return (
-            <Container
-              key={image.id}
-              className="relative aspect-[29/34] w-full overflow-hidden bg-ui-bg-subtle"
-              id={image.id}
-            >
-              {!!image.url && (
-                <Image
-                  src={image.url}
-                  priority={index <= 2 ? true : false}
-                  className="absolute inset-0 rounded-rounded"
-                  alt={`Product image ${index + 1}`}
-                  fill
-                  sizes="(max-width: 576px) 280px, (max-width: 768px) 360px, (max-width: 992px) 480px, 800px"
-                  style={{
-                    objectFit: "cover",
-                  }}
-                />
-              )}
-            </Container>
-          )
-        })}
-      </div>
+    <div className="flex flex-col w-full max-w-[720px] mx-auto gap-y-3 small:gap-y-4">
+      {visible.map((image, index) => (
+        <div
+          key={image.id}
+          id={image.id}
+          className="w-full overflow-hidden rounded-xl border border-ui-border-base bg-white"
+        >
+          <Image
+            src={image.url}
+            alt={
+              productTitle
+                ? `${productTitle} – afbeelding ${index + 1} van ${visible.length}`
+                : `Productafbeelding ${index + 1} van ${visible.length}`
+            }
+            width={0}
+            height={0}
+            sizes="(max-width: 720px) 100vw, 720px"
+            className="block w-full h-auto"
+            // Alleen de eerste afbeelding direct laden (LCP); de rest lazy.
+            priority={index === 0}
+            loading={index === 0 ? undefined : "lazy"}
+          />
+        </div>
+      ))}
     </div>
   )
 }

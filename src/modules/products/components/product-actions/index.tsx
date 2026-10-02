@@ -10,8 +10,12 @@ import { isEqual } from "lodash"
 import { useParams, usePathname, useSearchParams } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
 import ProductPrice from "../product-price"
+import TierDiscount from "../tier-discount"
+import { FREE_SHIPPING_TEXT } from "@lib/util/shipping"
 import MobileActions from "./mobile-actions"
 import { useRouter } from "next/navigation"
+
+const MAX_QUANTITY = 99
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
@@ -38,6 +42,7 @@ export default function ProductActions({
 
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
+  const [quantity, setQuantity] = useState(1)
   const countryCode = useParams().countryCode as string
 
   // If there is only 1 variant, preselect the options
@@ -116,6 +121,16 @@ export default function ProductActions({
     return false
   }, [selectedVariant])
 
+  // EAN: alleen tonen als de (gekozen of enige) variant een barcode heeft.
+  const eanVariant =
+    selectedVariant ??
+    (product.variants?.length === 1 ? product.variants[0] : undefined)
+  const ean = eanVariant?.barcode || undefined
+  const brand =
+    (product.metadata?.brand as string | undefined) ||
+    (product.metadata?.merk as string | undefined) ||
+    "RC Choice"
+
   const actionsRef = useRef<HTMLDivElement>(null)
 
   const inView = useIntersection(actionsRef, "0px")
@@ -128,7 +143,7 @@ export default function ProductActions({
 
     await addToCart({
       variantId: selectedVariant.id,
-      quantity: 1,
+      quantity,
       countryCode,
     })
 
@@ -137,7 +152,10 @@ export default function ProductActions({
 
   return (
     <>
-      <div className="flex flex-col gap-y-2" ref={actionsRef}>
+      <div
+        className="flex flex-col gap-y-2 rounded-xl border border-ui-border-base bg-white p-4 small:p-5"
+        ref={actionsRef}
+      >
         <div>
           {(product.variants?.length ?? 0) > 1 && (
             <div className="flex flex-col gap-y-4">
@@ -162,26 +180,89 @@ export default function ProductActions({
 
         <ProductPrice product={product} variant={selectedVariant} />
 
-        <Button
-          onClick={handleAddToCart}
-          disabled={
-            !inStock ||
-            !selectedVariant ||
-            !!disabled ||
-            isAdding ||
-            !isValidVariant
-          }
-          variant="primary"
-          className="w-full h-10"
-          isLoading={isAdding}
-          data-testid="add-product-button"
+        <TierDiscount />
+
+        <div className="flex items-center gap-x-3 mt-2">
+          <div
+            className="flex items-center rounded-lg border border-ui-border-base"
+            role="group"
+            aria-label="Aantal"
+          >
+            <button
+              type="button"
+              className="h-10 w-10 text-lg disabled:opacity-40"
+              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+              disabled={!!disabled || isAdding || quantity <= 1}
+              aria-label="Minder"
+              data-testid="quantity-decrease"
+            >
+              −
+            </button>
+            <input
+              type="number"
+              inputMode="numeric"
+              min={1}
+              max={MAX_QUANTITY}
+              value={quantity}
+              onChange={(e) => {
+                const n = parseInt(e.target.value, 10)
+                setQuantity(
+                  Number.isNaN(n) ? 1 : Math.min(MAX_QUANTITY, Math.max(1, n))
+                )
+              }}
+              disabled={!!disabled || isAdding}
+              aria-label="Aantal"
+              className="h-10 w-12 text-center bg-transparent [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              data-testid="quantity-input"
+            />
+            <button
+              type="button"
+              className="h-10 w-10 text-lg disabled:opacity-40"
+              onClick={() => setQuantity((q) => Math.min(MAX_QUANTITY, q + 1))}
+              disabled={!!disabled || isAdding || quantity >= MAX_QUANTITY}
+              aria-label="Meer"
+              data-testid="quantity-increase"
+            >
+              +
+            </button>
+          </div>
+          <Button
+            onClick={handleAddToCart}
+            disabled={
+              !inStock ||
+              !selectedVariant ||
+              !!disabled ||
+              isAdding ||
+              !isValidVariant
+            }
+            variant="primary"
+            className="flex-1 h-10"
+            isLoading={isAdding}
+            data-testid="add-product-button"
+          >
+            {!selectedVariant && !options
+              ? "Selecteer variant"
+              : !inStock || !isValidVariant
+              ? "Niet op voorraad"
+              : "In winkelwagen"}
+          </Button>
+        </div>
+
+        <ul
+          className="mt-3 flex flex-col gap-y-1.5 text-small-regular text-ui-fg-subtle"
+          data-testid="product-usps"
         >
-          {!selectedVariant && !options
-            ? "Selecteer variant"
-            : !inStock || !isValidVariant
-            ? "Niet op voorraad"
-            : "In winkelwagen"}
-        </Button>
+          <li>✓ {FREE_SHIPPING_TEXT}</li>
+          <li>✓ 14 dagen bedenktijd</li>
+          <li className="pt-1.5 mt-1.5 border-t border-ui-border-base">
+            Merk: <span className="text-ui-fg-base">{brand}</span>
+          </li>
+          {ean && (
+            <li>
+              EAN: <span className="text-ui-fg-base">{ean}</span>
+            </li>
+          )}
+        </ul>
         <MobileActions
           product={product}
           variant={selectedVariant}

@@ -32,17 +32,22 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
   return (
     <>
       <div
-        className="content-container  flex flex-col small:flex-row small:items-start py-6 relative"
+        className="content-container flex flex-col small:flex-row small:items-start gap-y-6 small:gap-x-8 py-6 relative"
         data-testid="product-container"
       >
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-6">
-          <ProductInfo product={product} />
-          <ProductTabs product={product} />
+        {/* Mobiel: titel → afbeeldingen → koopblok → productinfo. Desktop: 3 kolommen. */}
+        <div className="contents small:flex small:flex-col small:sticky small:top-48 small:max-w-[300px] small:w-full small:gap-y-6">
+          <div className="order-1 small:order-none">
+            <ProductInfo product={product} />
+          </div>
+          <div className="order-4 small:order-none">
+            <ProductTabs product={product} />
+          </div>
         </div>
-        <div className="block w-full relative">
-          <ImageGallery images={images} />
+        <div className="order-2 small:order-none block w-full min-w-0 relative">
+          <ImageGallery images={images} productTitle={product.title} />
         </div>
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
+        <div className="order-3 small:order-none flex flex-col small:sticky small:top-24 small:max-w-[320px] w-full gap-y-6 self-start">
           <ProductOnboardingCta />
           <Suspense
             fallback={
