@@ -106,6 +106,12 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 function metaDescription(product: HttpTypes.StoreProduct) {
   const text = (product.description || product.subtitle || product.title || "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#0?39;/g, "'")
     .replace(/\s+/g, " ")
     .trim()
   return text.length > 155 ? `${text.slice(0, 152).trimEnd()}...` : text
