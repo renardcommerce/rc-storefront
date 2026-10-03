@@ -12,6 +12,9 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import ProductPrice from "../product-price"
 import TierDiscount from "../tier-discount"
 import { FREE_SHIPPING_TEXT } from "@lib/util/shipping"
+import AddedToCartToast, {
+  AddToCartStatus,
+} from "../added-to-cart-toast"
 import MobileActions from "./mobile-actions"
 import { useRouter } from "next/navigation"
 
@@ -43,6 +46,8 @@ export default function ProductActions({
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
   const [quantity, setQuantity] = useState(1)
+  const [status, setStatus] = useState<AddToCartStatus>(null)
+  const statusTimer = useRef<any>(null)
   const countryCode = useParams().countryCode as string
 
   // If there is only 1 variant, preselect the options
@@ -140,15 +145,28 @@ export default function ProductActions({
     if (!selectedVariant?.id) return null
 
     setIsAdding(true)
+    setStatus(null)
+    clearTimeout(statusTimer.current)
 
-    await addToCart({
-      variantId: selectedVariant.id,
-      quantity,
-      countryCode,
-    })
-
-    setIsAdding(false)
+    try {
+      await addToCart({
+        variantId: selectedVariant.id,
+        quantity,
+        countryCode,
+      })
+      setStatus({ type: "success", quantity })
+    } catch (e: any) {
+      setStatus({
+        type: "error",
+        message: e?.message || "Probeer het opnieuw.",
+      })
+    } finally {
+      setIsAdding(false)
+      statusTimer.current = setTimeout(() => setStatus(null), 6000)
+    }
   }
+
+  useEffect(() => () => clearTimeout(statusTimer.current), [])
 
   return (
     <>
@@ -263,6 +281,11 @@ export default function ProductActions({
             </li>
           )}
         </ul>
+        <AddedToCartToast
+          status={status}
+          productTitle={product.title}
+          onClose={() => setStatus(null)}
+        />
         <MobileActions
           product={product}
           variant={selectedVariant}

@@ -86,12 +86,21 @@ export const listProducts = async ({
     })
 }
 
+const API_PAGE_SIZE = 100
+
 /**
- * This will fetch 100 products to the Next.js cache and sort them based on the sortBy parameter.
- * It will then return the paginated products based on the page and limit parameters.
+ * Productlijst met sortering + paginering.
+ *
+ * - "Nieuwste eerst": de API sorteert en pagineert zelf (order=-created_at,
+ *   offset/limit), dus één kleine request per pagina, ongeacht de catalogus.
+ * - Prijssortering: de store-API kan niet op berekende prijs sorteren. Daarom
+ *   worden alle producten opgehaald (pagina's van 100, de rest parallel),
+ *   in het geheugen gesorteerd en daarna gepagineerd. De requests zitten in de
+ *   Next-fetchcache (5 min), dus alleen de eerste bezoeker na verversen merkt
+ *   de extra requests.
  */
 export const listProductsWithSort = async ({
-  page = 0,
+  page = 1,
   queryParams,
   sortBy = "created_at",
   countryCode,
@@ -106,32 +115,50 @@ export const listProductsWithSort = async ({
   queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
 }> => {
   const limit = queryParams?.limit || 12
+  const safePage = Math.max(page, 1)
 
-  const {
-    response: { products, count },
-  } = await listProducts({
-    pageParam: 0,
-    queryParams: {
-      ...queryParams,
-      limit: 100,
-    },
-    countryCode,
-  })
+  if (sortBy === "created_at") {
+    const {
+      response: { products, count },
+    } = await listProducts({
+      pageParam: safePage,
+      queryParams: { ...queryParams, limit, order: "-created_at" },
+      countryCode,
+    })
 
-  const sortedProducts = sortProducts(products, sortBy)
+    return {
+      response: { products, count },
+      nextPage: count > safePage * limit ? safePage + 1 : null,
+      queryParams,
+    }
+  }
 
-  const pageParam = (page - 1) * limit
+  const fetchPage = (pageParam: number) =>
+    listProducts({
+      pageParam,
+      // vaste volgorde, zodat producten met dezelfde prijs stabiel blijven
+      queryParams: { ...queryParams, limit: API_PAGE_SIZE, order: "-created_at" },
+      countryCode,
+    })
 
-  const nextPage = count > pageParam + limit ? pageParam + limit : null
+  const first = await fetchPage(1)
+  const total = first.response.count
+  const extraPages = Math.max(0, Math.ceil(total / API_PAGE_SIZE) - 1)
+  const rest = await Promise.all(
+    Array.from({ length: extraPages }, (_, i) => fetchPage(i + 2))
+  )
 
-  const paginatedProducts = sortedProducts.slice(pageParam, pageParam + limit)
+  const all = [first, ...rest].flatMap((r) => r.response.products)
+  const sorted = sortProducts(all, sortBy)
+
+  const start = (safePage - 1) * limit
 
   return {
     response: {
-      products: paginatedProducts,
-      count,
+      products: sorted.slice(start, start + limit),
+      count: total,
     },
-    nextPage,
+    nextPage: total > start + limit ? safePage + 1 : null,
     queryParams,
   }
 }
