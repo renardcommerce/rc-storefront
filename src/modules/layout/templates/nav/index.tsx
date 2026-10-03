@@ -3,6 +3,7 @@ import { Suspense } from "react"
 import { listRegions } from "@lib/data/regions"
 import { listLocales } from "@lib/data/locales"
 import { getLocale } from "@lib/data/locale-actions"
+import { listCategories } from "@lib/data/categories"
 import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
@@ -10,11 +11,16 @@ import SearchBar from "@modules/layout/components/search-bar"
 import SideMenu from "@modules/layout/components/side-menu"
 
 export default async function Nav() {
-  const [regions, locales, currentLocale] = await Promise.all([
+  const [regions, locales, currentLocale, allCategories] = await Promise.all([
     listRegions().then((regions: StoreRegion[]) => regions),
     listLocales(),
     getLocale(),
+    listCategories().catch(() => null),
   ])
+
+  const categories = (allCategories ?? [])
+    .filter((c) => !c.parent_category)
+    .map((c) => ({ id: c.id, name: c.name, handle: c.handle }))
 
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
@@ -60,10 +66,32 @@ export default async function Nav() {
                 regions={regions}
                 locales={locales}
                 currentLocale={currentLocale}
+                categories={categories}
               />
             </div>
           </div>
         </nav>
+        {categories.length > 0 && (
+          <nav
+            aria-label="Categorieën"
+            className="hidden small:block border-t border-bone"
+            data-testid="nav-categories"
+          >
+            <ul className="content-container flex items-center gap-x-8 h-11 text-sm font-medium text-ink">
+              {categories.map((c) => (
+                <li key={c.id}>
+                  <LocalizedClientLink
+                    href={`/categories/${c.handle}`}
+                    className="hover:text-grey-60"
+                    data-testid="nav-category-link"
+                  >
+                    {c.name}
+                  </LocalizedClientLink>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
       </header>
     </div>
   )
