@@ -1,5 +1,8 @@
 import { convertToLocale } from "@lib/util/money"
-import { FREE_SHIPPING_THRESHOLD, getFreeShippingStatus } from "@lib/util/shipping"
+import {
+  getFreeShippingProgress,
+  getFreeShippingStatus,
+} from "@lib/util/shipping"
 
 type FreeShippingNoticeProps = {
   itemTotal?: number | null
@@ -14,10 +17,7 @@ const FreeShippingNotice = ({
 }: FreeShippingNoticeProps) => {
   const { isFree, remaining } = getFreeShippingStatus(itemTotal)
 
-  const progress = Math.min(
-    100,
-    Math.max(0, ((FREE_SHIPPING_THRESHOLD - remaining) / FREE_SHIPPING_THRESHOLD) * 100)
-  )
+  const progress = getFreeShippingProgress(itemTotal)
 
   return (
     <div
@@ -34,11 +34,15 @@ const FreeShippingNotice = ({
       </p>
       <div
         className="mt-2 h-1.5 overflow-hidden rounded-circle bg-white"
-        aria-hidden="true"
+        role="progressbar"
+        aria-label="Voortgang gratis verzending"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={progress}
       >
         <div
           className="h-full rounded-circle bg-ink transition-all"
-          style={{ width: `${isFree ? 100 : progress}%` }}
+          style={{ width: `${progress}%` }}
         />
       </div>
     </div>

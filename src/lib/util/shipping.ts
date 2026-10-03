@@ -15,6 +15,20 @@ export const CHECKOUT_COUNTRIES: Record<string, string> = {
 const toCents = (amount: number) => Math.round(amount * 100)
 
 /**
+ * Voortgang richting gratis verzending, 0-100, in centen berekend. Is de
+ * drempel niet gehaald dan blijft de waarde onder 100 (max. 95), zodat de balk
+ * ook bij € 0,01 tekort niet "vol" oogt. Pas bij >= drempel is het 100.
+ */
+export function getFreeShippingProgress(itemTotal?: number | null) {
+  const cents = Math.max(0, toCents(itemTotal ?? 0))
+  const thresholdCents = toCents(FREE_SHIPPING_THRESHOLD)
+  if (cents >= thresholdCents) {
+    return 100
+  }
+  return Math.min(95, Math.floor((cents / thresholdCents) * 100))
+}
+
+/**
  * Bepaalt of het winkelmandbedrag (cart.item_total) gratis verzending geeft.
  * Rekent in centen om floating point-fouten (bijv. 19.999999) te vermijden.
  */
