@@ -21,8 +21,8 @@ module.exports = {
         padding: "padding-top padding-right padding-bottom padding-left",
       },
       colors: {
-        // RC CHOICE-palet. LET OP: hexwaarden zijn een voorstel, nog te
-        // bevestigen tegen de merkregels van Renard (staan niet in de repo).
+        // RC CHOICE-palet (centraal; gebruik deze tokens, geen losse hexwaarden).
+        // gold alleen decoratief/op donkere vlakken: op paper te weinig contrast voor kleine tekst.
         paper: "#FAF8F3",
         bone: "#EDE8DC",
         gold: "#C9A24B",
@@ -40,6 +40,11 @@ module.exports = {
           80: "#1F2937",
           90: "#111827",
         },
+      },
+      boxShadow: {
+        card: "0 1px 2px rgba(17,19,23,0.04), 0 4px 16px rgba(17,19,23,0.06)",
+        "card-hover":
+          "0 2px 4px rgba(17,19,23,0.06), 0 10px 28px rgba(17,19,23,0.10)",
       },
       borderRadius: {
         none: "0px",

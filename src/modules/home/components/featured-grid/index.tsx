@@ -30,14 +30,17 @@ export default async function FeaturedGrid({
 
   return (
     <section className="bg-paper">
-      <div className="content-container py-16 small:py-24">
-        <div className="flex items-end justify-between gap-4 mb-8">
-          <h2 className="text-2xl small:text-3xl font-semibold text-ink">
-            Uit ons assortiment
-          </h2>
+      <div className="content-container pt-4 pb-16 small:pb-24">
+        <div className="flex items-end justify-between gap-4 mb-8 small:mb-10">
+          <div>
+            <p className="eyebrow mb-2">Assortiment</p>
+            <h2 className="text-2xl small:text-4xl font-semibold tracking-tight text-ink">
+              Uit ons assortiment
+            </h2>
+          </div>
           <LocalizedClientLink
             href="/store"
-            className="shrink-0 whitespace-nowrap text-sm font-semibold text-ink underline underline-offset-4 hover:text-gold"
+            className="shrink-0 whitespace-nowrap text-sm font-semibold text-ink underline underline-offset-4 hover:text-grey-60"
           >
             Bekijk alles
           </LocalizedClientLink>

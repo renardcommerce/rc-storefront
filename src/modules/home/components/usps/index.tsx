@@ -1,8 +1,8 @@
-import { Headset, LucideIcon, RotateCcw, Truck, Zap } from "lucide-react"
+import { Headset, LucideIcon, RotateCcw, Truck } from "lucide-react"
 
 import { FREE_SHIPPING_THRESHOLD } from "@lib/util/shipping"
 
-// Levertijd bewust niet genoemd tot die bekend is ([LEVERTIJD]).
+// Alleen claims die kloppen. Levertijd bewust niet genoemd tot die bekend is.
 const usps: { icon: LucideIcon; title: string; text: string }[] = [
   {
     icon: Truck,
@@ -12,12 +12,7 @@ const usps: { icon: LucideIcon; title: string; text: string }[] = [
   {
     icon: RotateCcw,
     title: "14 dagen bedenktijd",
-    text: "Niet tevreden? Je kunt je bestelling binnen 14 dagen retourneren.",
-  },
-  {
-    icon: Zap,
-    title: "Snelle levering",
-    text: "Je bestelling gaat snel op pad.",
+    text: "Niet tevreden? Je kunt je bestelling binnen 14 dagen herroepen.",
   },
   {
     icon: Headset,
@@ -28,16 +23,14 @@ const usps: { icon: LucideIcon; title: string; text: string }[] = [
 
 const Usps = () => {
   return (
-    <section className="bg-bone">
-      <div className="content-container py-12 small:py-16">
-        <ul className="grid grid-cols-1 xsmall:grid-cols-2 small:grid-cols-4 gap-8">
+    <section className="bg-paper">
+      <div className="content-container pb-12 small:pb-20">
+        <ul className="grid grid-cols-1 small:grid-cols-3 gap-6 small:gap-8 rounded-large bg-bone p-6 small:p-10">
           {usps.map(({ icon: Icon, title, text }) => (
             <li key={title} className="flex items-start gap-4">
-              <Icon
-                size={28}
-                className="shrink-0 text-gold"
-                aria-hidden="true"
-              />
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-circle bg-paper">
+                <Icon size={22} className="text-ink" aria-hidden="true" />
+              </span>
               <div>
                 <p className="font-semibold text-ink">{title}</p>
                 <p className="mt-1 text-sm text-grey-60">{text}</p>

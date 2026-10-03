@@ -46,43 +46,32 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
 const ProductInfoTab = ({ product }: ProductTabsProps) => {
   const ean = product.variants?.[0]?.barcode || product.variants?.[0]?.sku
 
+  const specs: [string, string][] = [
+    ["Merk", "RC Choice"],
+    ["EAN", ean || "-"],
+    ["Materiaal", product.material || "-"],
+    ["Gewicht", product.weight ? `${product.weight} g` : "-"],
+    [
+      "Afmetingen verpakking",
+      product.length && product.width && product.height
+        ? `${product.length} x ${product.width} x ${product.height} mm`
+        : "-",
+    ],
+    [
+      "Land van herkomst",
+      product.origin_country ? product.origin_country.toUpperCase() : "-",
+    ],
+  ]
+
   return (
-    <div className="text-small-regular py-8">
-      <div className="grid grid-cols-2 gap-x-8">
-        <div className="flex flex-col gap-y-4">
-          <div>
-            <span className="font-semibold">Merk</span>
-            <p>RC Choice</p>
-          </div>
-          <div>
-            <span className="font-semibold">EAN</span>
-            <p>{ean ? ean : "-"}</p>
-          </div>
-          <div>
-            <span className="font-semibold">Materiaal</span>
-            <p>{product.material ? product.material : "-"}</p>
-          </div>
+    <dl className="text-sm py-4 divide-y divide-bone">
+      {specs.map(([label, value]) => (
+        <div key={label} className="flex justify-between gap-x-4 py-2.5">
+          <dt className="text-grey-60">{label}</dt>
+          <dd className="text-right font-medium text-ink">{value}</dd>
         </div>
-        <div className="flex flex-col gap-y-4">
-          <div>
-            <span className="font-semibold">Gewicht</span>
-            <p>{product.weight ? `${product.weight} g` : "-"}</p>
-          </div>
-          <div>
-            <span className="font-semibold">Afmetingen verpakking</span>
-            <p>
-              {product.length && product.width && product.height
-                ? `${product.length} x ${product.width} x ${product.height} mm`
-                : "-"}
-            </p>
-          </div>
-          <div>
-            <span className="font-semibold">Land van herkomst</span>
-            <p>{product.origin_country ? product.origin_country.toUpperCase() : "-"}</p>
-          </div>
-        </div>
-      </div>
-    </div>
+      ))}
+    </dl>
   )
 }
 

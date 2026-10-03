@@ -153,7 +153,7 @@ export default function ProductActions({
   return (
     <>
       <div
-        className="flex flex-col gap-y-2 rounded-xl border border-ui-border-base bg-white p-4 small:p-5"
+        className="flex flex-col gap-y-2 rounded-large bg-white p-5 small:p-6 shadow-card"
         ref={actionsRef}
       >
         <div>
@@ -184,7 +184,7 @@ export default function ProductActions({
 
         <div className="flex items-center gap-x-3 mt-2">
           <div
-            className="flex items-center rounded-lg border border-ui-border-base"
+            className="flex items-center rounded-circle border border-bone bg-paper"
             role="group"
             aria-label="Aantal"
           >
@@ -236,7 +236,7 @@ export default function ProductActions({
               !isValidVariant
             }
             variant="primary"
-            className="flex-1 h-10"
+            className="flex-1 h-10 !rounded-circle !bg-ink !text-paper hover:!bg-grey-80 !shadow-none !border-0"
             isLoading={isAdding}
             data-testid="add-product-button"
           >
@@ -249,12 +249,12 @@ export default function ProductActions({
         </div>
 
         <ul
-          className="mt-3 flex flex-col gap-y-1.5 text-small-regular text-ui-fg-subtle"
+          className="mt-4 flex flex-col gap-y-2 text-sm text-grey-70"
           data-testid="product-usps"
         >
-          <li>✓ {FREE_SHIPPING_TEXT}</li>
-          <li>✓ 14 dagen bedenktijd</li>
-          <li className="pt-1.5 mt-1.5 border-t border-ui-border-base">
+          <li><span aria-hidden="true">✓</span> {FREE_SHIPPING_TEXT}</li>
+          <li><span aria-hidden="true">✓</span> 14 dagen bedenktijd</li>
+          <li className="pt-2 mt-1 border-t border-bone">
             Merk: <span className="text-ui-fg-base">{brand}</span>
           </li>
           {ean && (

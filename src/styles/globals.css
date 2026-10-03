@@ -157,3 +157,10 @@
 .product-description a {
   text-decoration: underline;
 }
+
+@layer components {
+  /* Klein hoofdletter-label boven koppen */
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.18em] text-grey-60;
+  }
+}

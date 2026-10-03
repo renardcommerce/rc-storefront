@@ -20,24 +20,24 @@ export default async function Footer() {
   const productCategories = await listCategories()
 
   return (
-    <footer className="border-t border-ui-border-base w-full">
+    <footer className="w-full bg-bone mt-8">
       <div className="content-container flex flex-col w-full">
-        <div className="flex flex-col gap-y-10 xsmall:flex-row items-start justify-between py-16">
+        <div className="flex flex-col gap-y-10 xsmall:flex-row items-start justify-between py-14 small:py-20">
           <div className="flex flex-col gap-y-3 max-w-xs">
             <LocalizedClientLink
               href="/"
-              className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
+              className="text-lg font-semibold uppercase tracking-[0.2em] text-ink"
             >
-              RC Choice
+              RC <span className="text-gold">Choice</span>
             </LocalizedClientLink>
-            <Text className="txt-small text-ui-fg-subtle">
+            <Text className="text-sm text-grey-70">
               Kabels en adapters voor thuis en kantoor. {FREE_SHIPPING_TEXT}.
             </Text>
           </div>
-          <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
+          <div className="gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
             {productCategories && productCategories?.length > 0 && (
               <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
+                <span className="eyebrow">
                   Categorieën
                 </span>
                 <ul
@@ -49,11 +49,11 @@ export default async function Footer() {
                     .slice(0, 6)
                     .map((c) => (
                       <li
-                        className="text-ui-fg-subtle txt-small"
+                        className="text-grey-70 text-sm"
                         key={c.id}
                       >
                         <LocalizedClientLink
-                          className={clx("hover:text-ui-fg-base")}
+                          className={clx("hover:text-ink hover:underline")}
                           href={`/categories/${c.handle}`}
                           data-testid="category-link"
                         >
@@ -65,14 +65,14 @@ export default async function Footer() {
               </div>
             )}
             <div className="flex flex-col gap-y-2">
-              <span className="txt-small-plus txt-ui-fg-base">
+              <span className="eyebrow">
                 Klantenservice
               </span>
-              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
+              <ul className="grid grid-cols-1 gap-y-2 text-grey-70 text-sm">
                 {serviceLinks.map((l) => (
                   <li key={l.href}>
                     <LocalizedClientLink
-                      className="hover:text-ui-fg-base"
+                      className="hover:text-ink hover:underline"
                       href={l.href}
                     >
                       {l.name}
@@ -82,14 +82,14 @@ export default async function Footer() {
               </ul>
             </div>
             <div className="flex flex-col gap-y-2">
-              <span className="txt-small-plus txt-ui-fg-base">
+              <span className="eyebrow">
                 Over RC Choice
               </span>
-              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
+              <ul className="grid grid-cols-1 gap-y-2 text-grey-70 text-sm">
                 {legalLinks.map((l) => (
                   <li key={l.href}>
                     <LocalizedClientLink
-                      className="hover:text-ui-fg-base"
+                      className="hover:text-ink hover:underline"
                       href={l.href}
                     >
                       {l.name}
@@ -100,8 +100,8 @@ export default async function Footer() {
             </div>
           </div>
         </div>
-        <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
-          <Text className="txt-compact-small">
+        <div className="flex w-full border-t border-grey-30 py-6 justify-between">
+          <Text className="text-xs text-grey-60">
             © {new Date().getFullYear()} RC Choice, een merk van Renard
             Commerce. Alle rechten voorbehouden.
           </Text>
