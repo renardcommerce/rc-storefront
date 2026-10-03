@@ -4,7 +4,6 @@ import { Table } from "@medusajs/ui"
 
 import Divider from "@modules/common/components/divider"
 import Item from "@modules/order/components/item"
-import SkeletonLineItem from "@modules/skeletons/components/skeleton-line-item"
 
 type ItemsProps = {
   order: HttpTypes.StoreOrder
@@ -33,7 +32,13 @@ const Items = ({ order }: ItemsProps) => {
                   )
                 })
             : repeat(5).map((i) => {
-                return <SkeletonLineItem key={i} />
+                return (
+                  <Table.Row key={i}>
+                    <Table.Cell>
+                      <div className="h-16 w-full bg-gray-200 animate-pulse" />
+                    </Table.Cell>
+                  </Table.Row>
+                )
               })}
         </Table.Body>
       </Table>

@@ -20,18 +20,18 @@ const Review = ({ cart }: { cart: any }) => {
     (cart.payment_collection || paidByGiftcard)
 
   return (
-    <div className="bg-white">
+    <div className="rounded-large bg-white p-5 small:p-8 shadow-card">
       <div className="flex flex-row items-center justify-between mb-6">
         <Heading
           level="h2"
           className={clx(
-            "flex flex-row text-3xl-regular gap-x-2 items-baseline",
+            "flex flex-row text-xl font-semibold text-ink gap-x-2 items-baseline",
             {
               "opacity-50 pointer-events-none select-none": !isOpen,
             }
           )}
         >
-          Controleren
+          <span className="mr-2 text-grey-50">4.</span>Controleren
         </Heading>
       </div>
       {isOpen && previousStepsCompleted && (

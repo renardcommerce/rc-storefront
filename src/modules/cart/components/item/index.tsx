@@ -1,12 +1,10 @@
 "use client"
 
-import { Table, Text, clx } from "@medusajs/ui"
-import { updateLineItem } from "@lib/data/cart"
+import { Trash } from "lucide-react"
+import { clx } from "@medusajs/ui"
+import { deleteLineItem, updateLineItem } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
-import CartItemSelect from "@modules/cart/components/cart-item-select"
 import ErrorMessage from "@modules/checkout/components/error-message"
-import DeleteButton from "@modules/common/components/delete-button"
-import LineItemOptions from "@modules/common/components/line-item-options"
 import LineItemPrice from "@modules/common/components/line-item-price"
 import LineItemUnitPrice from "@modules/common/components/line-item-unit-price"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -20,8 +18,11 @@ type ItemProps = {
   currencyCode: string
 }
 
+const MAX_QUANTITY = 10
+
 const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   const [updating, setUpdating] = useState(false)
+  const [deleting, setDeleting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const changeQuantity = async (quantity: number) => {
@@ -40,104 +41,109 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
       })
   }
 
-  // TODO: Update this to grab the actual max inventory
-  const maxQtyFromInventory = 10
-  const maxQuantity = item.variant?.manage_inventory ? 10 : maxQtyFromInventory
+  const handleDelete = async () => {
+    setDeleting(true)
+    await deleteLineItem(item.id).catch(() => setDeleting(false))
+  }
+
+  const isFull = type === "full"
 
   return (
-    <Table.Row className="w-full" data-testid="product-row">
-      <Table.Cell className="!pl-0 !pr-2 small:!pr-4 p-4 w-16 small:w-24">
-        <LocalizedClientLink
-          href={`/products/${item.product_handle}`}
-          className={clx("flex", {
-            "w-16": type === "preview",
-            "small:w-24 w-12": type === "full",
-          })}
-        >
-          <Thumbnail
-            thumbnail={item.thumbnail}
-            images={item.variant?.product?.images}
-            size="square"
-          />
-        </LocalizedClientLink>
-      </Table.Cell>
+    <li
+      className="flex w-full gap-x-4 py-4 first:pt-0 last:pb-0"
+      data-testid="product-row"
+    >
+      <LocalizedClientLink
+        href={`/products/${item.product_handle}`}
+        className={clx("shrink-0", isFull ? "w-20 small:w-24" : "w-16")}
+      >
+        <Thumbnail
+          thumbnail={item.thumbnail}
+          images={item.variant?.product?.images}
+          size="square"
+          className="!p-0"
+        />
+      </LocalizedClientLink>
 
-      <Table.Cell className="text-left !px-2 small:!px-4 break-words max-w-[8rem] small:max-w-none">
-        <Text
-          className="txt-medium-plus text-ui-fg-base"
-          data-testid="product-title"
-        >
-          {item.product_title}
-        </Text>
-        <LineItemOptions variant={item.variant} data-testid="product-variant" />
-      </Table.Cell>
+      <div className="flex min-w-0 flex-1 flex-col gap-y-2">
+        <div className="flex items-start justify-between gap-x-3">
+          <div className="min-w-0">
+            <p
+              className="break-words text-sm font-medium text-ink"
+              data-testid="product-title"
+            >
+              {item.product_title}
+            </p>
+            {item.variant?.title && item.variant.title !== "Default" && (
+              <p
+                className="mt-0.5 text-xs text-grey-60"
+                data-testid="product-variant"
+              >
+                Variant: {item.variant.title}
+              </p>
+            )}
+            {isFull && (
+              <div className="mt-1 text-xs text-grey-60">
+                <LineItemUnitPrice
+                  item={item}
+                  style="tight"
+                  currencyCode={currencyCode}
+                />
+              </div>
+            )}
+          </div>
+          <div className="shrink-0 whitespace-nowrap text-sm font-semibold text-ink">
+            {!isFull && (
+              <p className="text-right text-xs font-normal text-grey-60">
+                {item.quantity}×
+              </p>
+            )}
+            <LineItemPrice
+              item={item}
+              style="tight"
+              currencyCode={currencyCode}
+            />
+          </div>
+        </div>
 
-      {type === "full" && (
-        <Table.Cell className="!px-2 small:!px-4">
-          <div className="flex flex-col small:flex-row gap-2 items-start small:items-center small:w-28">
-            <DeleteButton id={item.id} data-testid="product-delete-button" />
-            <CartItemSelect
+        {isFull && (
+          <div className="flex items-center gap-x-4">
+            <label className="sr-only" htmlFor={`qty-${item.id}`}>
+              Aantal
+            </label>
+            <select
+              id={`qty-${item.id}`}
               value={item.quantity}
-              onChange={(value) => changeQuantity(parseInt(value.target.value))}
-              className="w-14 h-10 p-4"
+              onChange={(e) => changeQuantity(parseInt(e.target.value))}
+              disabled={updating || deleting}
+              className="h-10 rounded-circle border border-bone bg-paper px-4 text-sm text-ink"
               data-testid="product-select-button"
             >
-              {/* TODO: Update this with the v2 way of managing inventory */}
               {Array.from(
-                {
-                  length: Math.min(maxQuantity, 10),
-                },
+                { length: Math.max(MAX_QUANTITY, item.quantity) },
                 (_, i) => (
                   <option value={i + 1} key={i}>
                     {i + 1}
                   </option>
                 )
               )}
-
-              <option value={1} key={1}>
-                1
-              </option>
-            </CartItemSelect>
+            </select>
+            <button
+              type="button"
+              onClick={handleDelete}
+              disabled={deleting}
+              className="inline-flex items-center gap-x-1.5 text-sm text-grey-60 hover:text-ink"
+              data-testid="product-delete-button"
+            >
+              {deleting ? <Spinner /> : <Trash size={16} aria-hidden="true" />}
+              Verwijderen
+            </button>
             {updating && <Spinner />}
           </div>
-          <ErrorMessage error={error} data-testid="product-error-message" />
-        </Table.Cell>
-      )}
-
-      {type === "full" && (
-        <Table.Cell className="hidden small:table-cell">
-          <LineItemUnitPrice
-            item={item}
-            style="tight"
-            currencyCode={currencyCode}
-          />
-        </Table.Cell>
-      )}
-
-      <Table.Cell className="!pr-0 !pl-2 small:!pl-4 whitespace-nowrap">
-        <span
-          className={clx("!pr-0", {
-            "flex flex-col items-end h-full justify-center": type === "preview",
-          })}
-        >
-          {type === "preview" && (
-            <span className="flex gap-x-1 ">
-              <Text className="text-ui-fg-muted">{item.quantity}x </Text>
-              <LineItemUnitPrice
-                item={item}
-                style="tight"
-                currencyCode={currencyCode}
-              />
-            </span>
-          )}
-          <LineItemPrice
-            item={item}
-            style="tight"
-            currencyCode={currencyCode}
-          />
-        </span>
-      </Table.Cell>
-    </Table.Row>
+        )}
+        <ErrorMessage error={error} data-testid="product-error-message" />
+      </div>
+    </li>
   )
 }
 

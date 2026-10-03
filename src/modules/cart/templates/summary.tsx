@@ -3,7 +3,6 @@
 import { Button, Heading } from "@medusajs/ui"
 
 import CartTotals from "@modules/common/components/cart-totals"
-import Divider from "@modules/common/components/divider"
 import DiscountCode from "@modules/checkout/components/discount-code"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import FreeShippingNotice from "@modules/common/components/free-shipping-notice"
@@ -29,12 +28,11 @@ const Summary = ({ cart }: SummaryProps) => {
   const step = getCheckoutStep(cart)
 
   return (
-    <div className="flex flex-col gap-y-4">
-      <Heading level="h2" className="text-[2rem] leading-[2.75rem]">
+    <div className="flex flex-col gap-y-5">
+      <Heading level="h2" className="text-xl font-semibold text-ink">
         Overzicht
       </Heading>
       <DiscountCode cart={cart} />
-      <Divider />
       <FreeShippingNotice
         itemTotal={cart.item_total}
         currencyCode={cart.currency_code}
@@ -44,7 +42,11 @@ const Summary = ({ cart }: SummaryProps) => {
         href={"/checkout?step=" + step}
         data-testid="checkout-button"
       >
-        <Button className="w-full h-10">Naar afrekenen</Button>
+        <Button
+          className="w-full h-12 !rounded-circle !bg-ink !text-paper hover:!bg-grey-80 !shadow-none !border-0"
+        >
+          Naar afrekenen
+        </Button>
       </LocalizedClientLink>
     </div>
   )

@@ -8,8 +8,8 @@ export default function CheckoutLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="w-full bg-white relative small:min-h-screen">
-      <div className="h-16 bg-white border-b ">
+    <div className="w-full bg-paper relative small:min-h-screen">
+      <div className="h-16 bg-paper border-b border-bone">
         <nav className="flex h-full items-center content-container justify-between">
           <LocalizedClientLink
             href="/cart"
@@ -26,10 +26,10 @@ export default function CheckoutLayout({
           </LocalizedClientLink>
           <LocalizedClientLink
             href="/"
-            className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
+            className="text-lg font-semibold uppercase tracking-[0.2em] text-ink"
             data-testid="store-link"
           >
-            RC Choice
+            RC <span className="text-gold">Choice</span>
           </LocalizedClientLink>
           <div className="flex-1 basis-0" />
         </nav>

@@ -5,7 +5,6 @@ import compareAddresses from "@lib/util/compare-addresses"
 import { CheckCircleSolid } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Heading, Text, useToggleState } from "@medusajs/ui"
-import Divider from "@modules/common/components/divider"
 import Spinner from "@modules/common/icons/spinner"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useActionState } from "react"
@@ -40,20 +39,20 @@ const Addresses = ({
   const [message, formAction] = useActionState(setAddresses, null)
 
   return (
-    <div className="bg-white">
+    <div className="rounded-large bg-white p-5 small:p-8 shadow-card">
       <div className="flex flex-row items-center justify-between mb-6">
         <Heading
           level="h2"
-          className="flex flex-row text-3xl-regular gap-x-2 items-baseline"
+          className="flex flex-row text-xl font-semibold text-ink gap-x-2 items-baseline"
         >
-          Verzendadres
+          <span className="mr-2 text-grey-50">1.</span>Verzendadres
           {!isOpen && <CheckCircleSolid />}
         </Heading>
         {!isOpen && cart?.shipping_address && (
           <Text>
             <button
               onClick={handleEdit}
-              className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
+              className="text-sm font-medium text-ink underline underline-offset-4 hover:text-grey-60"
               data-testid="edit-address-button"
             >
               Wijzigen
@@ -75,7 +74,7 @@ const Addresses = ({
               <div>
                 <Heading
                   level="h2"
-                  className="text-3xl-regular gap-x-4 pb-6 pt-8"
+                  className="text-xl font-semibold text-ink gap-x-4 pb-6 pt-8"
                 >
                   Factuuradres
                 </Heading>
@@ -176,8 +175,7 @@ const Addresses = ({
           </div>
         </div>
       )}
-      <Divider className="mt-8" />
-    </div>
+          </div>
   )
 }
 
