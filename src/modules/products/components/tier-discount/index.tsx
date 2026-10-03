@@ -14,7 +14,7 @@ export default function TierDiscount() {
       {TIER_DISCOUNTS.map((tier) => (
         <li
           key={tier.quantity}
-          className="rounded-lg border border-ui-border-base bg-ui-bg-subtle px-2 py-1.5 text-center leading-tight"
+          className="rounded-rounded bg-bone px-2 py-1.5 text-center leading-tight"
         >
           <span className="block font-semibold">{tier.quantity} stuks</span>
           <span className="block text-ui-fg-subtle">

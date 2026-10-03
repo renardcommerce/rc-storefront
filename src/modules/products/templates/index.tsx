@@ -32,7 +32,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
   return (
     <>
       <div
-        className="content-container flex flex-col small:flex-row small:items-start gap-y-6 small:gap-x-8 py-6 relative"
+        className="content-container flex flex-col small:flex-row small:items-start gap-y-8 small:gap-x-10 py-8 small:py-12 relative"
         data-testid="product-container"
       >
         {/* Mobiel: titel → afbeeldingen → koopblok → productinfo. Desktop: 3 kolommen. */}
@@ -63,7 +63,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
         </div>
       </div>
       <div
-        className="content-container my-16 small:my-32"
+        className="content-container my-16 small:my-24"
         data-testid="related-products-container"
       >
         <Suspense fallback={<SkeletonRelatedProducts />}>

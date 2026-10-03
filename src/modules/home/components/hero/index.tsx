@@ -4,26 +4,35 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 
 const Hero = () => {
   return (
-    <section className="w-full bg-ink text-paper">
-      <div className="content-container flex flex-col items-center text-center py-20 small:py-32 gap-6">
-        <p className="text-3xl small:text-5xl font-semibold tracking-[0.2em] uppercase">
-          <span className="text-white">RC</span>{" "}
-          <span className="text-gold">Choice</span>
-        </p>
-        <h1 className="text-2xl small:text-4xl font-semibold leading-tight max-w-2xl">
-          De juiste kabel. Meteen geregeld.
-        </h1>
-        <p className="text-base small:text-lg text-bone/80 max-w-xl">
-          Betrouwbare HDMI-, DisplayPort-, USB- en netwerkkabels.
-        </p>
-        <LocalizedClientLink
-          href="/store"
-          className="mt-2 inline-flex items-center gap-2 rounded-soft bg-gold px-8 py-4 text-sm font-semibold uppercase tracking-wider text-ink hover:bg-white transition-colors duration-200"
-          data-testid="hero-cta"
-        >
-          Bekijk alle producten
-          <ArrowRight size={18} aria-hidden="true" />
-        </LocalizedClientLink>
+    <section className="w-full bg-paper">
+      <div className="content-container py-6 small:py-10">
+        <div className="rounded-large bg-bone px-6 py-14 small:px-16 small:py-24 shadow-card">
+          <div className="max-w-2xl">
+            <p className="eyebrow">RC Choice · Kabels &amp; adapters</p>
+            <h1 className="mt-4 text-4xl small:text-6xl font-semibold leading-[1.05] tracking-tight text-ink">
+              De juiste kabel.
+              <br />
+              Meteen geregeld.
+            </h1>
+            <p className="mt-6 max-w-xl text-base small:text-lg text-grey-70">
+              Betrouwbare HDMI-, DisplayPort-, USB- en netwerkkabels voor thuis
+              en kantoor.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <LocalizedClientLink
+                href="/store"
+                className="inline-flex h-12 items-center gap-2 rounded-circle bg-ink px-7 text-sm font-semibold text-paper transition-colors duration-200 hover:bg-grey-80"
+                data-testid="hero-cta"
+              >
+                Bekijk alle producten
+                <ArrowRight size={18} aria-hidden="true" />
+              </LocalizedClientLink>
+              <span className="text-sm text-grey-60">
+                Gratis verzending vanaf € 20 · NL &amp; BE
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   )

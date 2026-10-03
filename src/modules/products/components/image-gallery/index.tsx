@@ -17,7 +17,7 @@ const ImageGallery = ({ images, productTitle }: ImageGalleryProps) => {
         <div
           key={image.id}
           id={image.id}
-          className="w-full overflow-hidden rounded-xl border border-ui-border-base bg-white"
+          className="w-full overflow-hidden rounded-large bg-bone shadow-card"
         >
           <Image
             src={image.url}
@@ -29,7 +29,7 @@ const ImageGallery = ({ images, productTitle }: ImageGalleryProps) => {
             width={0}
             height={0}
             sizes="(max-width: 720px) 100vw, 720px"
-            className="block w-full h-auto"
+            className="block w-full h-auto mix-blend-multiply"
             // Alleen de eerste afbeelding direct laden (LCP); de rest lazy.
             priority={index === 0}
             loading={index === 0 ? undefined : "lazy"}

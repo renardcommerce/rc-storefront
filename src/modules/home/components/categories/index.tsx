@@ -46,8 +46,9 @@ export default async function Categories({
 
   return (
     <section className="bg-paper">
-      <div className="content-container py-16 small:py-24">
-        <h2 className="text-2xl small:text-3xl font-semibold text-ink mb-8">
+      <div className="content-container py-12 small:py-20">
+        <p className="eyebrow mb-2">Categorieën</p>
+        <h2 className="text-2xl small:text-4xl font-semibold tracking-tight text-ink mb-8 small:mb-10">
           Shop op categorie
         </h2>
         <ul className="grid grid-cols-1 small:grid-cols-3 gap-4 small:gap-6">
@@ -58,10 +59,12 @@ export default async function Categories({
               <li key={category.id}>
                 <LocalizedClientLink
                   href={`/categories/${category.handle}`}
-                  className="group flex h-full flex-col gap-4 rounded-rounded border border-bone bg-white p-6 hover:border-gold transition-colors duration-200"
+                  className="group flex h-full flex-col gap-4 rounded-large bg-white p-6 small:p-8 shadow-card hover:shadow-card-hover transition-shadow duration-200"
                   data-testid="home-category"
                 >
-                  <Icon size={32} className="text-gold" aria-hidden="true" />
+                  <span className="flex h-12 w-12 items-center justify-center rounded-circle bg-bone">
+                    <Icon size={24} className="text-ink" aria-hidden="true" />
+                  </span>
                   <span className="text-xl font-semibold text-ink">
                     {category.name}
                   </span>
