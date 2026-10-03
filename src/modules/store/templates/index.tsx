@@ -4,6 +4,7 @@ import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-g
 import RefinementList from "@modules/store/components/refinement-list"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 
+import PageHeader from "@modules/store/components/page-header"
 import PaginatedProducts from "./paginated-products"
 
 const StoreTemplate = ({
@@ -21,30 +22,21 @@ const StoreTemplate = ({
   const sort = sortBy || "created_at"
 
   return (
-    <div
-      className="flex flex-col small:flex-row small:items-start py-6 content-container"
-      data-testid="category-container"
-    >
+    <div className="content-container py-8 small:py-12" data-testid="category-container">
+      <PageHeader
+        eyebrow={q ? "Zoekresultaten" : "Assortiment"}
+        title={q ? `Resultaten voor “${q}”` : "Alle producten"}
+        titleTestId="store-page-title"
+      />
       <RefinementList sortBy={sort} />
-      <div className="w-full">
-        <div className="mb-8">
-          <p className="eyebrow mb-2">{q ? "Zoekresultaten" : "Assortiment"}</p>
-          <h1
-            className="text-2xl small:text-3xl font-semibold text-ink"
-            data-testid="store-page-title"
-          >
-            {q ? `Resultaten voor “${q}”` : "Alle producten"}
-          </h1>
-        </div>
-        <Suspense fallback={<SkeletonProductGrid />}>
-          <PaginatedProducts
-            sortBy={sort}
-            page={pageNumber}
-            q={q}
-            countryCode={countryCode}
-          />
-        </Suspense>
-      </div>
+      <Suspense fallback={<SkeletonProductGrid />}>
+        <PaginatedProducts
+          sortBy={sort}
+          page={pageNumber}
+          q={q}
+          countryCode={countryCode}
+        />
+      </Suspense>
     </div>
   )
 }

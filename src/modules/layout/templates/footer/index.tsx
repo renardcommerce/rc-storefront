@@ -22,7 +22,7 @@ export default async function Footer() {
   return (
     <footer className="w-full bg-bone mt-8">
       <div className="content-container flex flex-col w-full">
-        <div className="flex flex-col gap-y-10 xsmall:flex-row items-start justify-between py-14 small:py-20">
+        <div className="flex flex-col gap-y-10 small:flex-row items-start justify-between py-14 small:py-20">
           <div className="flex flex-col gap-y-3 max-w-xs">
             <LocalizedClientLink
               href="/"
@@ -34,7 +34,7 @@ export default async function Footer() {
               Kabels en adapters voor thuis en kantoor. {FREE_SHIPPING_TEXT}.
             </Text>
           </div>
-          <div className="gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
+          <div className="gap-10 md:gap-x-16 grid grid-cols-2 xsmall:grid-cols-3 min-w-0">
             {productCategories && productCategories?.length > 0 && (
               <div className="flex flex-col gap-y-2">
                 <span className="eyebrow">

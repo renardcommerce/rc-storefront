@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 
-import InteractiveLink from "@modules/common/components/interactive-link"
+import PageHeader from "@modules/store/components/page-header"
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
 import RefinementList from "@modules/store/components/refinement-list"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
@@ -37,47 +37,34 @@ export default function CategoryTemplate({
   getParents(category)
 
   return (
-    <div
-      className="flex flex-col small:flex-row small:items-start py-6 content-container"
-      data-testid="category-container"
-    >
-      <RefinementList sortBy={sort} data-testid="sort-by-container" />
-      <div className="w-full">
-        <div className="flex flex-row mb-8 text-2xl-semi gap-4">
-          {parents &&
-            parents.map((parent) => (
-              <span key={parent.id} className="text-ui-fg-subtle">
-                <LocalizedClientLink
-                  className="mr-4 hover:text-black"
-                  href={`/categories/${parent.handle}`}
-                  data-testid="sort-by-link"
-                >
-                  {parent.name}
-                </LocalizedClientLink>
-                /
-              </span>
-            ))}
-          <h1 data-testid="category-page-title">{category.name}</h1>
-        </div>
+    <div className="content-container py-8 small:py-12" data-testid="category-container">
+      <PageHeader
+        eyebrow={parents.length ? parents.map((p) => p.name).join(" / ") : "Categorie"}
+        title={category.name}
+        titleTestId="category-page-title"
+      >
         {category.description && (
-          <div className="mb-8 text-base-regular">
-            <p>{category.description}</p>
-          </div>
+          <p className="mt-3 max-w-2xl text-base text-grey-70">
+            {category.description}
+          </p>
         )}
-        {category.category_children && (
-          <div className="mb-8 text-base-large">
-            <ul className="grid grid-cols-1 gap-2">
-              {category.category_children?.map((c) => (
-                <li key={c.id}>
-                  <InteractiveLink href={`/categories/${c.handle}`}>
-                    {c.name}
-                  </InteractiveLink>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-        <Suspense
+      </PageHeader>
+      {category.category_children && category.category_children.length > 0 && (
+        <ul className="mb-6 flex flex-wrap gap-2 small:mb-8">
+          {category.category_children.map((c) => (
+            <li key={c.id}>
+              <LocalizedClientLink
+                href={`/categories/${c.handle}`}
+                className="inline-flex h-10 items-center rounded-circle bg-bone px-4 text-sm text-ink hover:bg-grey-20"
+              >
+                {c.name}
+              </LocalizedClientLink>
+            </li>
+          ))}
+        </ul>
+      )}
+      <RefinementList sortBy={sort} data-testid="sort-by-container" />
+      <Suspense
           fallback={
             <SkeletonProductGrid
               numberOfProducts={category.products?.length ?? 8}
@@ -90,8 +77,7 @@ export default function CategoryTemplate({
             categoryId={category.id}
             countryCode={countryCode}
           />
-        </Suspense>
-      </div>
+      </Suspense>
     </div>
   )
 }

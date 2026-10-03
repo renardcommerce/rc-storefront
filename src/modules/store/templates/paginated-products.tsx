@@ -83,8 +83,11 @@ export default async function PaginatedProducts({
 
   return (
     <>
+      <p className="mb-6 text-sm text-grey-60" data-testid="product-count">
+        {count} {count === 1 ? "product" : "producten"}
+      </p>
       <ul
-        className="grid grid-cols-2 w-full small:grid-cols-3 medium:grid-cols-4 gap-x-6 gap-y-8"
+        className="grid grid-cols-2 w-full small:grid-cols-3 medium:grid-cols-4 gap-x-4 small:gap-x-6 gap-y-10"
         data-testid="products-list"
       >
         {products.map((p) => {

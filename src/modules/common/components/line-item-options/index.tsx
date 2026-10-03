@@ -12,6 +12,10 @@ const LineItemOptions = ({
   "data-testid": dataTestid,
   "data-value": dataValue,
 }: LineItemOptionsProps) => {
+  if (!variant?.title || variant.title === "Default") {
+    return null
+  }
+
   return (
     <Text
       data-testid={dataTestid}
