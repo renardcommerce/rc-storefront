@@ -1,11 +1,6 @@
 "use client"
 
-import Back from "@modules/common/icons/back"
-import FastDelivery from "@modules/common/icons/fast-delivery"
-import Refresh from "@modules/common/icons/refresh"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
-import { FREE_SHIPPING_TEXT } from "@lib/util/shipping"
 import Accordion from "./accordion"
 import { HttpTypes } from "@medusajs/types"
 
@@ -18,10 +13,6 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
     {
       label: "Productinformatie",
       component: <ProductInfoTab product={product} />,
-    },
-    {
-      label: "Verzending & retourneren",
-      component: <ShippingInfoTab />,
     },
   ]
 
@@ -72,52 +63,6 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
         </div>
       ))}
     </dl>
-  )
-}
-
-const ShippingInfoTab = () => {
-  return (
-    <div className="text-small-regular py-8">
-      <div className="grid grid-cols-1 gap-y-8">
-        <div className="flex items-start gap-x-2">
-          <FastDelivery />
-          <div>
-            <span className="font-semibold">{FREE_SHIPPING_TEXT}</span>
-            <p className="max-w-sm">
-              Je bestelling wordt zorgvuldig verpakt en verzonden. Zodra je
-              pakket onderweg is, ontvang je een track &amp; trace-code.
-            </p>
-          </div>
-        </div>
-        <div className="flex items-start gap-x-2">
-          <Back />
-          <div>
-            <span className="font-semibold">14 dagen bedenktijd</span>
-            <p className="max-w-sm">
-              Niet tevreden? Je kunt je aankoop binnen 14 dagen na ontvangst
-              herroepen. De kosten van het terugsturen zijn voor jouw rekening.{" "}
-              <LocalizedClientLink href="/content/retourneren" className="underline">
-                Bekijk de retourvoorwaarden
-              </LocalizedClientLink>
-              .
-            </p>
-          </div>
-        </div>
-        <div className="flex items-start gap-x-2">
-          <Refresh />
-          <div>
-            <span className="font-semibold">Vragen?</span>
-            <p className="max-w-sm">
-              Twijfel je welke kabel je nodig hebt?{" "}
-              <LocalizedClientLink href="/content/contact" className="underline">
-                Neem contact met ons op
-              </LocalizedClientLink>
-              , we helpen je graag.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
   )
 }
 
