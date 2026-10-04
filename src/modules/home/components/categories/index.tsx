@@ -1,16 +1,11 @@
-import { Cable, LucideIcon, Network, Usb } from "lucide-react"
+import Image from "next/image"
+import { ArrowRight } from "lucide-react"
 
 import { listCategories } from "@lib/data/categories"
 import { listProducts } from "@lib/data/products"
+import { getProductPhoto, hasProductPhoto } from "@lib/util/product-photo"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-
-const pickIcon = (name: string): LucideIcon => {
-  const n = name.toLowerCase()
-  if (n.includes("usb")) return Usb
-  if (n.includes("netwerk")) return Network
-  return Cable
-}
 
 // Eigen id plus alle onderliggende categorieën, zodat producten in een
 // subcategorie ook meetellen.
@@ -33,14 +28,27 @@ export default async function Categories({
     return null
   }
 
-  const counts = await Promise.all(
+  // Per categorie: aantal producten en een echte productfoto (eerste product
+  // met foto). Zonder foto toont de tegel geen beeld, nooit een verzonnen foto.
+  const info = await Promise.all(
     top.map((c) =>
       listProducts({
         regionId: region.id,
-        queryParams: { category_id: collectIds(c), limit: 1, fields: "id" },
+        queryParams: {
+          category_id: collectIds(c),
+          limit: 12,
+          order: "-created_at",
+          fields: "id,title,thumbnail,*images",
+        },
       })
-        .then(({ response }) => response.count)
-        .catch(() => null)
+        .then(({ response }) => ({
+          count: response.count as number | null,
+          photo: (() => {
+            const withPhoto = response.products.find(hasProductPhoto)
+            return withPhoto ? getProductPhoto(withPhoto) : null
+          })(),
+        }))
+        .catch(() => ({ count: null, photo: null }))
     )
   )
 
@@ -48,34 +56,49 @@ export default async function Categories({
     <section className="bg-paper">
       <div className="content-container py-12 small:py-20">
         <p className="eyebrow mb-2">Categorieën</p>
-        <h2 className="text-2xl small:text-4xl font-semibold tracking-tight text-ink mb-8 small:mb-10">
+        <h2 className="mb-8 text-2xl font-semibold tracking-tight text-ink small:mb-10 small:text-4xl">
           Shop op categorie
         </h2>
-        <ul className="grid grid-cols-1 small:grid-cols-3 gap-4 small:gap-6">
+        <ul className="grid grid-cols-1 gap-4 xsmall:grid-cols-2 small:grid-cols-3 small:gap-6">
           {top.map((category, i) => {
-            const Icon = pickIcon(category.name)
-            const count = counts[i]
+            const { count, photo } = info[i]
             return (
               <li key={category.id}>
                 <LocalizedClientLink
                   href={`/categories/${category.handle}`}
-                  className="group flex h-full flex-col gap-4 rounded-large bg-white p-6 small:p-8 shadow-card hover:shadow-card-hover transition-shadow duration-200"
+                  className="group flex h-full flex-col overflow-hidden rounded-large bg-white shadow-card transition-shadow duration-200 hover:shadow-card-hover"
                   data-testid="home-category"
                 >
-                  <span className="flex h-12 w-12 items-center justify-center rounded-circle bg-bone">
-                    <Icon size={24} className="text-ink" aria-hidden="true" />
-                  </span>
-                  <span className="text-xl font-semibold text-ink">
-                    {category.name}
-                  </span>
-                  {count !== null && (
-                    <span className="text-sm text-grey-60">
-                      {count} {count === 1 ? "product" : "producten"}
+                  <div className="relative aspect-[4/3] w-full bg-bone">
+                    {photo && (
+                      <Image
+                        src={photo}
+                        alt=""
+                        fill
+                        quality={60}
+                        sizes="(max-width: 512px) 90vw, (max-width: 1024px) 45vw, 460px"
+                        className="object-contain object-center p-8 mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
+                      />
+                    )}
+                  </div>
+                  <div className="flex items-end justify-between gap-4 bg-ink p-5 text-paper small:p-6">
+                    <div className="min-w-0">
+                      <span className="block text-lg font-semibold small:text-xl">
+                        {category.name}
+                      </span>
+                      {count !== null && (
+                        <span className="mt-1 block text-sm text-grey-20">
+                          {count} {count === 1 ? "product" : "producten"}
+                        </span>
+                      )}
+                    </div>
+                    <span
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-circle bg-gold text-ink"
+                      aria-hidden="true"
+                    >
+                      <ArrowRight size={18} />
                     </span>
-                  )}
-                  <span className="mt-auto text-sm font-semibold text-ink underline-offset-4 group-hover:underline">
-                    Bekijk categorie
-                  </span>
+                  </div>
                 </LocalizedClientLink>
               </li>
             )

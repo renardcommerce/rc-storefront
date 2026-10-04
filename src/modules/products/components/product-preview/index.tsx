@@ -1,3 +1,4 @@
+import { getHoverPhoto } from "@lib/util/product-photo"
 import { getProductPrice } from "@lib/util/get-product-price"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -27,6 +28,7 @@ export default async function ProductPreview({
           images={product.images}
           size="square"
           isFeatured={isFeatured}
+          hoverImage={getHoverPhoto(product)}
         />
         <div className="mt-4 px-1">
           <p
