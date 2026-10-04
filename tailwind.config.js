@@ -27,6 +27,7 @@ module.exports = {
         bone: "#EDE8DC",
         gold: "#C9A24B",
         ink: "#111317",
+        // Kleine tekst: grey-50/60/70 zijn donkerder gezet voor meer contrast.
         grey: {
           0: "#FFFFFF",
           5: "#F9FAFB",
@@ -34,9 +35,9 @@ module.exports = {
           20: "#E5E7EB",
           30: "#D1D5DB",
           40: "#9CA3AF",
-          50: "#6B7280",
-          60: "#4B5563",
-          70: "#374151",
+          50: "#4B5563",
+          60: "#374151",
+          70: "#1F2937",
           80: "#1F2937",
           90: "#111827",
         },

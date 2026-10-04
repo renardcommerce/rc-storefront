@@ -10,6 +10,8 @@ type ThumbnailProps = {
   images?: any[] | null
   size?: "small" | "medium" | "large" | "full" | "square"
   isFeatured?: boolean
+  // Tweede foto, alleen zichtbaar bij hover op desktop.
+  hoverImage?: string | null
   className?: string
   "data-testid"?: string
 }
@@ -19,6 +21,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   images,
   size = "small",
   isFeatured,
+  hoverImage,
   className,
   "data-testid": dataTestid,
 }) => {
@@ -42,6 +45,20 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       data-testid={dataTestid}
     >
       <ImageOrPlaceholder image={initialImage} size={size} />
+      {initialImage && hoverImage && (
+        <div className="absolute inset-0 hidden bg-bone opacity-0 transition-opacity duration-300 small:block [@media(hover:hover)]:group-hover:opacity-100">
+          <Image
+            src={hoverImage}
+            alt=""
+            className="object-contain object-center p-8 mix-blend-multiply"
+            draggable={false}
+            quality={50}
+            sizes="(max-width: 1440px) 25vw, 360px"
+            loading="lazy"
+            fill
+          />
+        </div>
+      )}
     </Container>
   )
 }

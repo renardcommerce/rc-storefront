@@ -23,17 +23,17 @@ const usps: { icon: LucideIcon; title: string; text: string }[] = [
 
 const Usps = () => {
   return (
-    <section className="bg-paper">
-      <div className="content-container pb-12 small:pb-20">
-        <ul className="grid grid-cols-1 small:grid-cols-3 gap-6 small:gap-8 rounded-large bg-bone p-6 small:p-10">
+    <section className="bg-ink text-paper">
+      <div className="content-container py-10 small:py-14">
+        <ul className="grid grid-cols-1 gap-6 small:grid-cols-3 small:gap-8">
           {usps.map(({ icon: Icon, title, text }) => (
             <li key={title} className="flex items-start gap-4">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-circle bg-paper">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-circle bg-gold">
                 <Icon size={22} className="text-ink" aria-hidden="true" />
               </span>
               <div>
                 <p className="font-semibold text-ink">{title}</p>
-                <p className="mt-1 text-sm text-grey-60">{text}</p>
+                <p className="mt-1 text-sm text-grey-20">{text}</p>
               </div>
             </li>
           ))}
