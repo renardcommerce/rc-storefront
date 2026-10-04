@@ -23,7 +23,7 @@ export default function Popular({
           <div>
             <p className="eyebrow mb-2">Assortiment</p>
             <h2 className="text-2xl font-semibold tracking-tight text-ink small:text-4xl">
-              Populair
+              Uit ons assortiment
             </h2>
           </div>
           <LocalizedClientLink
