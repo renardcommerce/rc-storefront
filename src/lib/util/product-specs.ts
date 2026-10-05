@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types"
+import type { HttpTypes } from "@medusajs/types"
 
 export type ProductSpec = { label: string; value: string }
 
@@ -18,12 +18,31 @@ type SpecSource = Pick<
  * bron twijfel, dan wordt er niet doorgezocht in een zwakkere bron.
  */
 
+// Titel/subtitel als platte tekst.
 const stripHtml = (s?: string | null) =>
   (s ?? "")
     .replace(/<[^>]*>/g, " ")
     .replace(/&nbsp;/g, " ")
     .replace(/\s+/g, " ")
     .trim()
+
+// Zinnen/opsommingen waarin iets uitgesloten, optioneel of alleen als variant
+// genoemd wordt ("Dit is geen HDMI kabel", "Verkrijgbaar in 1, 2 en 5 meter").
+// Die zeggen niets over dit product en tellen niet mee.
+const NOT_ABOUT_THIS_PRODUCT =
+  /\b(geen|niet|zonder|ook|verkrijgbaar|keuze|compatibel|past|varianten|leverbaar|beschikbaar)\b/i
+
+// Beschrijving: blokniveau-tags en zinseinden zijn scheidingen; zinnen die
+// niet over dit product gaan vallen weg.
+const descriptionText = (s?: string | null) =>
+  (s ?? "")
+    .replace(/<\/?(?:li|p|br|div|ul|ol|h\d)[^>]*>/gi, "¶")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .split(/¶|(?<=[.!?])\s+/)
+    .map((seg) => seg.replace(/\s+/g, " ").trim())
+    .filter((seg) => seg && !NOT_ABOUT_THIS_PRODUCT.test(seg))
+    .join(" ¶ ")
 
 const meta = (p: SpecSource, keys: string[]): string | undefined => {
   for (const key of keys) {
@@ -61,7 +80,7 @@ const CONNECTORS: Conn[] = [
 ]
 
 // Genoemd maar niet eenduidig (welke USB? welke jack?). Aanwezigheid = twijfel.
-const AMBIGUOUS = "usb|micro[\\s-]?usb|mini[\\s-]?usb|lightning|jack|scart|firewire|thunderbolt|serieel|parallel|centronics|ethernet"
+const AMBIGUOUS = "usb(?![\\s-]?\\d)|micro[\\s-]?usb|mini[\\s-]?usb|lightning|jack|scart|firewire|thunderbolt|serieel|parallel|centronics|ethernet"
 
 const CONN_RE = new RegExp(
   `(?<![\\w])(?:${CONNECTORS.map((c, i) => `(?<c${i}>${c.re})`).join("|")}|(?<amb>${AMBIGUOUS}))(?![\\w])`,
@@ -95,26 +114,36 @@ function scanConnectors(text: string): Scan {
 function connectorFrom(text: string): Found<string> {
   if (!text) return null
   const scan = scanConnectors(text)
-  if (!scan.names.length && !scan.ambiguous) return null
+  // Niets herkend (ook "USB Male" zonder A/B/C): deze bron zegt niets, kijk
+  // naar de volgende. Een herkende aansluiting naast een vage = twijfel.
+  if (!scan.names.length) return null
+  if (scan.ambiguous) return "doubt"
 
-  if (TWO_END_WORDS.test(text)) {
-    // Twee uiteinden: alleen tonen als de tekst exact "A naar B" zegt en
-    // beide kanten herkend zijn.
-    const pair = text.match(new RegExp(`(.{0,25}?)${SEP}(.{0,25})`, "i"))
-    if (!pair || scan.ambiguous) return "doubt"
-    const left = scanConnectors(pair[1].split(/[,(]/).pop() ?? "")
-    const right = scanConnectors((pair[2] ?? "").split(/[,)]/)[0])
-    // zoek de aansluiting direct links en rechts van het scheidingswoord
-    const leftName = left.names[left.names.length - 1]
-    const rightName = right.names[0]
-    if (leftName && rightName && !left.ambiguous && !right.ambiguous) {
-      return { value: `${leftName} naar ${rightName}` }
+  const distinct = [...new Set(scan.names)]
+  const parts = text.split(new RegExp(SEP, "i"))
+
+  if (parts.length > 1) {
+    // "A naar B": elk scheidingswoord moet dezelfde twee herkende uiteinden
+    // geven, en er mag geen derde aansluiting in de tekst staan.
+    const pairs = new Set<string>()
+    for (let i = 0; i < parts.length - 1; i++) {
+      const left = scanConnectors(parts[i].slice(-25))
+      const right = scanConnectors(parts[i + 1].slice(0, 25))
+      const l = left.names[left.names.length - 1]
+      const r = right.names[0]
+      if (!l || !r || left.ambiguous || right.ambiguous) return "doubt"
+      pairs.add(l === r ? l : `${l} naar ${r}`)
     }
-    return "doubt"
+    if (pairs.size !== 1) return "doubt"
+    const value = [...pairs][0]
+    const ends = value.split(" naar ")
+    if (distinct.some((n) => !ends.includes(n))) return "doubt"
+    return { value }
   }
 
-  if (scan.ambiguous) return "doubt"
-  const distinct = [...new Set(scan.names)]
+  // Geen scheidingswoord, maar wel een woord dat op twee verschillende
+  // uiteinden wijst (adapter, verloop, printerkabel…): niet zeker genoeg.
+  if (TWO_END_WORDS.test(text)) return "doubt"
   return distinct.length === 1 ? { value: distinct[0] } : "doubt"
 }
 
@@ -122,7 +151,7 @@ function connectorFrom(text: string): Found<string> {
 
 // Doubtful: bereik, "tot/max/vanaf", per meter, of gevolgd door "/" (m/s).
 const LENGTH_RE =
-  /(?<pre>(?:tot(?:\s+en\s+met)?|max(?:imaal)?\.?|vanaf|per|[-–/])\s*)?(?<![\d.,])(?<num>\d{1,3}(?:[.,]\d{1,2})?)\s?(?<unit>meter|cm|m)(?![\w/])/gi
+  /(?<pre>(?:tot(?:\s+en\s+met)?|max(?:imaal)?\.?|vanaf|per)\s*)?(?<![\d.,])(?<num>\d{1,3}(?:[.,]\d{1,2})?)\s?(?<unit>meter|cm|m)(?![\w/])/gi
 
 function lengthFrom(text: string): Found<string> {
   if (!text) return null
@@ -136,8 +165,16 @@ function lengthFrom(text: string): Found<string> {
       doubt = true
       continue
     }
-    // bereik of opsomming vóór het getal: "1 - 3 m", "1 / 2 / 3 m", "1, 2 of 3 m"
-    if (/(?:\d\s?(?:m|cm|meter)?\s?(?:[-–/]|of|en|,)\s?)$/i.test(before)) {
+    // Bereik of opsomming vóór het getal: "1 m - 3 m", "1-3 m", "1, 2 of 3 m".
+    // Een streepje als scheiding tussen titeldelen ("USB 2.0 - 5 Meter") is
+    // géén bereik.
+    const wide = text.slice(Math.max(0, (m.index ?? 0) - 14), m.index)
+    if (
+      /\d\s?(?:m|cm|meter)\s?(?:[-–/]|of|en|,)\s?$/i.test(wide) ||
+      /(?<![\d.,])\d{1,3}\s?(?:[-–/])\s?$/.test(wide) ||
+      /(?<![\d.,])\d{1,3}\s?(?:,|of|en)\s$/i.test(wide) ||
+      /\/\s?$/.test(wide)
+    ) {
       doubt = true
       continue
     }
@@ -183,19 +220,14 @@ function pick<T>(sources: string[], fn: (t: string) => Found<T>): T | undefined 
  */
 export function getProductSpecs(p: SpecSource): ProductSpec[] {
   const title = stripHtml(p.title)
-  const sources = [title, stripHtml(p.subtitle), stripHtml(p.description)]
-
-  // Heeft het product twee verschillende uiteinden volgens titel/subtitel?
-  // Dan zegt een versie niets over "het" product: laat versie weg.
-  const twoEnded = TWO_END_WORDS.test(`${sources[0]} ${sources[1]}`)
+  const sources = [title, stripHtml(p.subtitle), descriptionText(p.description)]
 
   const length = meta(p, ["lengte", "length"]) ?? pick(sources, lengthFrom)
   const connector =
     meta(p, ["aansluiting", "connector", "connectors"]) ??
     pick(sources, connectorFrom)
   const version =
-    meta(p, ["versie", "version"]) ??
-    (twoEnded ? undefined : pick(sources, versionFrom))
+    meta(p, ["versie", "version"]) ?? pick(sources, versionFrom)
 
   const specs: ProductSpec[] = []
   if (length) specs.push({ label: "Lengte", value: length })
