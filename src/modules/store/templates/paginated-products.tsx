@@ -1,6 +1,8 @@
 import { listProductsWithSort } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
+import { retryOnce } from "@lib/util/retry-once"
 import ProductPreview from "@modules/products/components/product-preview"
+import RetryButton from "@modules/store/components/retry-button"
 import { Pagination } from "@modules/store/components/pagination"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 
@@ -52,20 +54,43 @@ export default async function PaginatedProducts({
     queryParams["q"] = q
   }
 
-  const region = await getRegion(countryCode)
+  let region
+  let products
+  let count
 
-  if (!region) {
-    return null
+  try {
+    // één nieuwe poging bij 502/503/504 of netwerkfout
+    region = await retryOnce(() => getRegion(countryCode))
+
+    if (!region) {
+      return null
+    }
+
+    const {
+      response: { products: list, count: total },
+    } = await retryOnce(() =>
+      listProductsWithSort({ page, queryParams, sortBy, countryCode })
+    )
+    products = list
+    count = total
+  } catch (error) {
+    console.error("Producten ophalen mislukt na 2 pogingen:", error)
+    return (
+      <div
+        className="rounded-large border border-grey-20 p-6 small:p-8"
+        role="alert"
+        data-testid="products-error"
+      >
+        <p className="font-semibold text-ink">
+          De producten konden niet worden geladen.
+        </p>
+        <p className="mt-1 text-grey-60">
+          Er is tijdelijk een storing. Probeer het zo nog eens.
+        </p>
+        <RetryButton />
+      </div>
+    )
   }
-
-  let {
-    response: { products, count },
-  } = await listProductsWithSort({
-    page,
-    queryParams,
-    sortBy,
-    countryCode,
-  })
 
   const totalPages = Math.ceil(count / PRODUCT_LIMIT)
 

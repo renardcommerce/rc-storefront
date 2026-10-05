@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      # Geen Node-versie vastgelegd in package.json (engines) of .nvmrc; Next 15 vereist >= 18.18.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Er is geen package-lock.json; de lockfile is yarn.lock (Yarn 4, meegeleverd in .yarn/releases).
+      # Daarom `yarn install --immutable` (het equivalent van npm ci) in plaats van npm ci.
+      - run: node .yarn/releases/yarn-4.12.0.cjs install --immutable
+      - run: npm run test:specs
+      # Alleen dummy-waarden, geen echte keys of secrets.
+      - run: NODE_ENV=production npm run build
+        env:
+          NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: pk_dummy_ci
+          NEXT_PUBLIC_BASE_URL: http://localhost:8000
+          NEXT_PUBLIC_DEFAULT_REGION: nl
+          MEDUSA_BACKEND_URL: http://localhost:9000
