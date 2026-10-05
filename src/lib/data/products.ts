@@ -70,6 +70,9 @@ export const listProducts = async ({
         headers,
         next,
         cache: "force-cache",
+        // Time-out, en schakelt bovendien Next's request-memoization uit: anders
+        // krijgt een nieuwe poging binnen dezelfde render de mislukte response terug.
+        signal: AbortSignal.timeout(10_000),
       }
     )
     .then(({ products, count }) => {
