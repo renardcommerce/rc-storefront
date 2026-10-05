@@ -12,7 +12,7 @@
     "build": "next build",
     "start": "next start -p 8000",
     "lint": "next lint",
-    "test:specs": "npx --yes tsx --test src/lib/util/product-specs.test.ts src/lib/util/retry-once.test.ts",
+    "test:specs": "npx --yes tsx --test src/lib/util/product-specs.test.ts src/lib/util/retry-once.test.ts src/lib/util/pagination.test.ts",
     "analyze": "ANALYZE=true next build"
   },
   "dependencies": {

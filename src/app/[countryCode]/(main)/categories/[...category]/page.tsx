@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
+import { resolvePageOrRedirect } from "@lib/data/pagination-redirect"
 import { getCategoryByHandle, listCategories } from "@lib/data/categories"
 import { listRegions } from "@lib/data/regions"
 import { StoreRegion } from "@medusajs/types"
@@ -65,7 +66,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 export default async function CategoryPage(props: Props) {
   const searchParams = await props.searchParams
   const params = await props.params
-  const { sortBy, page } = searchParams
+  const { sortBy } = searchParams
 
   const productCategory = await getCategoryByHandle(params.category)
 
@@ -73,11 +74,18 @@ export default async function CategoryPage(props: Props) {
     notFound()
   }
 
+  const page = await resolvePageOrRedirect({
+    searchParams,
+    basePath: `/${params.countryCode}/categories/${params.category.join("/")}`,
+    countryCode: params.countryCode,
+    filters: { category_id: [productCategory.id] },
+  })
+
   return (
     <CategoryTemplate
       category={productCategory}
       sortBy={sortBy}
-      page={page}
+      page={String(page)}
       countryCode={params.countryCode}
     />
   )
