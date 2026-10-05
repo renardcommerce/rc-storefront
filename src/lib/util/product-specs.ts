@@ -214,6 +214,12 @@ function pick<T>(sources: string[], fn: (t: string) => Found<T>): T | undefined 
   return undefined
 }
 
+// Adapters, koppelstukken, verloopstekkers en splitters: hun "lengte" is vaak
+// een maat van het onderdeel zelf of een veldwaarde (bv. 0,03 m) en geen
+// kabellengte. Herkend aan woorden in de titel.
+const COUPLER_RE =
+  /\b(adapter|koppelstuk|verloop\w*|splitter|switch)\b|\bfemale\s+naar\s+female\b/i
+
 /**
  * Lengte, aansluiting en versie. Zie het principe bovenaan: alleen zekere
  * waarden, anders geen veld.
@@ -222,7 +228,12 @@ export function getProductSpecs(p: SpecSource): ProductSpec[] {
   const title = stripHtml(p.title)
   const sources = [title, stripHtml(p.subtitle), descriptionText(p.description)]
 
-  const length = meta(p, ["lengte", "length"]) ?? pick(sources, lengthFrom)
+  // Adapters en koppelstukken: lengte alleen als die expliciet in titel of
+  // subtitel staat. Metadata-veld en beschrijving tellen niet mee.
+  const isCoupler = COUPLER_RE.test(title)
+  const length = isCoupler
+    ? pick(sources.slice(0, 2), lengthFrom)
+    : meta(p, ["lengte", "length"]) ?? pick(sources, lengthFrom)
   const connector =
     meta(p, ["aansluiting", "connector", "connectors"]) ??
     pick(sources, connectorFrom)

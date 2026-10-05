@@ -56,3 +56,47 @@ test("metadata wordt vertrouwd", () => {
 test("niets herkend = leeg", () => {
   assert.deepEqual(show({ title: "Audiokabel premium" }), [])
 })
+
+// Adapters en koppelstukken: lengte alleen uit titel/subtitel.
+// LET OP: onderstaande producten zijn VOORBEELDEN, geen echte producten.
+test("voorbeeld: adapter zonder lengte in titel → geen lengte", () => {
+  assert.ok(
+    !show({ title: "HDMI naar DisplayPort Adapter 4K" }).some((s) =>
+      s.startsWith("Lengte")
+    )
+  )
+})
+
+test("voorbeeld: koppelstuk met veldwaarde 0,03 m → geen lengte", () => {
+  const specs = show({
+    title: "HDMI Koppelstuk Female naar Female",
+    metadata: { lengte: "0,03 m" },
+    description: "<p>Compact koppelstuk van 0,03 m.</p>",
+  })
+  assert.ok(!specs.some((s) => s.startsWith("Lengte")), specs.join(", "))
+})
+
+test("voorbeeld: adapter met '20 cm' in titel → wel lengte", () => {
+  assert.ok(
+    show({
+      title: "Mini DisplayPort naar HDMI Adapter 20 cm",
+      metadata: { lengte: "0,05 m" },
+    }).includes("Lengte: 20 cm")
+  )
+})
+
+test("voorbeeld: adapter met '2 m' in subtitel → wel lengte", () => {
+  assert.ok(
+    show({ title: "USB-C naar HDMI Adapter", subtitle: "Kabel van 2 m" }).includes(
+      "Lengte: 2 m"
+    )
+  )
+})
+
+test("voorbeeld: gewone kabel met lengte uit veld → wel lengte", () => {
+  assert.ok(
+    show({ title: "HDMI Kabel 4K", metadata: { lengte: "3 m" } }).includes(
+      "Lengte: 3 m"
+    )
+  )
+})
