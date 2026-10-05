@@ -3,6 +3,9 @@
 // option in Medusa ("Standaard verzending (NL & BE)").
 export const FREE_SHIPPING_THRESHOLD = 20
 
+// Verzendkosten onder de drempel (incl. btw), zie shipping option in Medusa.
+export const SHIPPING_COST_TEXT = "€ 6,95"
+
 // Vaste tekst voor productpagina en footer.
 export const FREE_SHIPPING_TEXT = `Gratis verzending vanaf € ${FREE_SHIPPING_THRESHOLD} (NL & BE)`
 
