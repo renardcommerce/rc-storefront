@@ -1,11 +1,15 @@
 import { MetadataRoute } from "next"
 
+import { CONTENT_PAGES } from "@lib/content/pages"
 import { listCategories } from "@lib/data/categories"
+import { listCollections } from "@lib/data/collections"
 import { listProducts } from "@lib/data/products"
+import { SEO_ENABLED } from "@lib/seo"
 import { getBaseURL } from "@lib/util/env"
 
 // Sitemap staat pas aan bij livegang (NEXT_PUBLIC_SITE_INDEXABLE=true).
 // Tot die tijd een lege sitemap, zodat staging niet geïndexeerd wordt.
+// Met NEXT_PUBLIC_SEO_ENABLED=true komen ook collecties en contentpagina's erbij.
 const SITE_INDEXABLE = process.env.NEXT_PUBLIC_SITE_INDEXABLE === "true"
 const COUNTRY = "nl"
 
@@ -22,6 +26,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/${COUNTRY}/store`, changeFrequency: "daily", priority: 0.8 },
   ]
 
+  if (SEO_ENABLED) {
+    Object.keys(CONTENT_PAGES).forEach((slug) =>
+      entries.push({
+        url: `${base}/${COUNTRY}/content/${slug}`,
+        changeFrequency: "monthly",
+        priority: 0.3,
+      })
+    )
+  }
+
   try {
     const categories = await listCategories()
     categories?.forEach((c) =>
@@ -31,6 +45,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.7,
       })
     )
+
+    if (SEO_ENABLED) {
+      const { collections } = await listCollections()
+      collections.forEach((c) =>
+        entries.push({
+          url: `${base}/${COUNTRY}/collections/${c.handle}`,
+          changeFrequency: "weekly",
+          priority: 0.6,
+        })
+      )
+    }
 
     let page: number | null = 1
     while (page) {

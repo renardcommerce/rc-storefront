@@ -6,11 +6,21 @@ import Popular from "@modules/home/components/popular"
 import Usps from "@modules/home/components/usps"
 import { listHomeProducts } from "@lib/data/home"
 import { getRegion } from "@lib/data/regions"
+import { withSeo } from "@lib/seo"
 
-export const metadata: Metadata = {
+const BASE_METADATA: Metadata = {
   title: "RC Choice | Kabels & Accessoires",
   description:
     "Betrouwbare kabels, adapters en accessoires van RC Choice.",
+}
+
+export async function generateMetadata(props: {
+  params: Promise<{ countryCode: string }>
+}): Promise<Metadata> {
+  const { countryCode } = await props.params
+  return withSeo(BASE_METADATA, () => ({
+    alternates: { canonical: `/${countryCode}` },
+  }))
 }
 
 export default async function Home(props: {
