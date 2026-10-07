@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 
+import { resolvePageOrRedirect } from "@lib/data/pagination-redirect"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import StoreTemplate from "@modules/store/templates"
 
@@ -22,13 +23,21 @@ type Params = {
 export default async function StorePage(props: Params) {
   const params = await props.params;
   const searchParams = await props.searchParams;
-  const { sortBy, page, q } = searchParams
+  const { sortBy } = searchParams
+  const q = searchParams.q?.trim().slice(0, 100) || undefined
+
+  const page = await resolvePageOrRedirect({
+    searchParams,
+    basePath: `/${params.countryCode}/store`,
+    countryCode: params.countryCode,
+    filters: { q },
+  })
 
   return (
     <StoreTemplate
       sortBy={sortBy}
-      page={page}
-      q={q?.trim().slice(0, 100) || undefined}
+      page={String(page)}
+      q={q}
       countryCode={params.countryCode}
     />
   )

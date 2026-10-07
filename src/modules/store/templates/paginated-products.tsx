@@ -1,12 +1,13 @@
 import { listProductsWithSort } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
+import { PRODUCTS_PER_PAGE } from "@lib/util/pagination"
 import { retryOnce } from "@lib/util/retry-once"
 import ProductPreview from "@modules/products/components/product-preview"
 import RetryButton from "@modules/store/components/retry-button"
 import { Pagination } from "@modules/store/components/pagination"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 
-const PRODUCT_LIMIT = 12
+const PRODUCT_LIMIT = PRODUCTS_PER_PAGE
 
 type PaginatedProductsParams = {
   limit: number
@@ -35,7 +36,7 @@ export default async function PaginatedProducts({
   countryCode: string
 }) {
   const queryParams: PaginatedProductsParams = {
-    limit: 12,
+    limit: PRODUCTS_PER_PAGE,
   }
 
   if (collectionId) {
