@@ -28,8 +28,7 @@ type CountrySelectProps = {
 
 const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
   const [current, setCurrent] = useState<
-    | { country: string | undefined; region: string; label: string | undefined }
-    | undefined
+    CountryOption | undefined
   >(undefined)
 
   const { countryCode } = useParams()
@@ -43,10 +42,14 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
         return r.countries?.map((c) => ({
           country: c.iso_2,
           region: r.id,
-          label: c.display_name,
+          label: c.display_name ?? c.iso_2 ?? "",
         }))
       })
       .flat()
+      .filter(
+        (o): o is CountryOption =>
+          !!o?.country
+      )
       .sort((a, b) => (a?.label ?? "").localeCompare(b?.label ?? ""))
   }, [regions])
 
