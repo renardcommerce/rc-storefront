@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 import { CONCEPT_LABEL, CONTENT_PAGES, SHOW_CONCEPT_LABEL } from "@lib/content/pages"
+import { withSeo } from "@lib/seo"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 type Props = {
@@ -9,17 +10,21 @@ type Props = {
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
-  const { slug } = await props.params
+  const { slug, countryCode } = await props.params
   const page = CONTENT_PAGES[slug]
 
   if (!page) {
     return {}
   }
 
-  return {
+  const current: Metadata = {
     title: `${page.title} | RC Choice`,
     description: page.description,
   }
+
+  return withSeo(current, () => ({
+    alternates: { canonical: `/${countryCode}/content/${slug}` },
+  }))
 }
 
 export default async function ContentPage(props: Props) {
