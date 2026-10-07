@@ -64,6 +64,18 @@ export default async function ContentPage(props: Props) {
               </ul>
             )
           }
+          if (block.type === "link") {
+            return (
+              <LocalizedClientLink
+                key={i}
+                href={block.href}
+                className="inline-flex h-12 w-fit items-center rounded-circle bg-ink px-7 text-sm font-semibold text-paper transition-colors hover:bg-grey-80"
+                data-testid="content-link"
+              >
+                {block.text}
+              </LocalizedClientLink>
+            )
+          }
           return (
             <p key={i} className="leading-relaxed">
               {block.text}

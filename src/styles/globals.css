@@ -164,3 +164,21 @@
     @apply text-xs font-semibold uppercase tracking-[0.18em] text-grey-60;
   }
 }
+
+/* Printbaar retourformulier: alleen .print-sheet afdrukken */
+@media print {
+  body:has(.print-sheet) * {
+    visibility: hidden;
+  }
+  body:has(.print-sheet) .print-sheet,
+  body:has(.print-sheet) .print-sheet * {
+    visibility: visible;
+  }
+  body:has(.print-sheet) .print-sheet {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    border: 0;
+  }
+}
