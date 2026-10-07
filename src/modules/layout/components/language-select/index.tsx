@@ -63,8 +63,8 @@ const getLocalizedLanguageName = (
 
 const DEFAULT_OPTION: LanguageOption = {
   code: "",
-  name: "Default",
-  localizedName: "Default",
+  name: "Standaard",
+  localizedName: "Standaard",
   countryCode: "",
 }
 

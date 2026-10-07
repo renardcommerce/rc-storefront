@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 import { resolvePageOrRedirect } from "@lib/data/pagination-redirect"
+import { stripBrand, titleWithBrand } from "@lib/util/brand"
 import { getCategoryByHandle, listCategories } from "@lib/data/categories"
 import { listRegions } from "@lib/data/regions"
 import {
@@ -57,9 +58,11 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   try {
     const productCategory = await getCategoryByHandle(params.category)
 
-    const title = productCategory.name + " | RC Choice"
+    const name = stripBrand(productCategory.name)
+    const title = titleWithBrand(name)
 
-    const description = productCategory.description ?? `${title} category.`
+    const description =
+      productCategory.description ?? `Bekijk ${name} van RC Choice.`
 
     const current: Metadata = {
       title,
@@ -70,10 +73,10 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     }
 
     return withSeo(current, () => ({
-      title: seoTitle(productCategory.name, seoPage(searchParams.page)),
+      title: seoTitle(name, seoPage(searchParams.page)),
       description: metaText(
         productCategory.description,
-        `Bekijk ${productCategory.name} van RC Choice.`
+        `Bekijk ${name} van RC Choice.`
       ),
       alternates: {
         canonical: canonicalPath(
@@ -111,7 +114,7 @@ export default async function CategoryPage(props: Props) {
         data={breadcrumbJsonLd([
           { name: "Home", path: `/${params.countryCode}` },
           {
-            name: productCategory.name,
+            name: stripBrand(productCategory.name),
             path: `/${params.countryCode}/categories/${params.category.join("/")}`,
           },
         ])}
