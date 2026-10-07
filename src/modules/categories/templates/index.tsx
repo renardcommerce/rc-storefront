@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 
+import { stripBrand } from "@lib/util/brand"
 import PageHeader from "@modules/store/components/page-header"
 import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-grid"
 import RefinementList from "@modules/store/components/refinement-list"
@@ -40,7 +41,7 @@ export default function CategoryTemplate({
     <div className="content-container py-8 small:py-12" data-testid="category-container">
       <PageHeader
         eyebrow={parents.length ? parents.map((p) => p.name).join(" / ") : "Categorie"}
-        title={category.name}
+        title={stripBrand(category.name)}
         titleTestId="category-page-title"
       >
         {category.description && (
