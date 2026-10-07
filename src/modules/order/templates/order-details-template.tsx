@@ -12,10 +12,13 @@ import React from "react"
 
 type OrderDetailsTemplateProps = {
   order: HttpTypes.StoreOrder
+  /** true als de bestelling bezorgd is en het retourvenster nog open staat */
+  returnEligible?: boolean
 }
 
 const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
   order,
+  returnEligible = false,
 }) => {
   return (
     <div className="flex flex-col justify-center gap-y-4">
@@ -34,6 +37,15 @@ const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
         data-testid="order-details-container"
       >
         <OrderDetails order={order} showStatus />
+        {returnEligible && (
+          <LocalizedClientLink
+            href={`/account/orders/details/${order.id}/retour`}
+            className="inline-flex h-12 w-fit items-center rounded-circle bg-ink px-7 text-sm font-semibold text-paper transition-colors hover:bg-grey-80"
+            data-testid="return-button"
+          >
+            Retour aanmelden
+          </LocalizedClientLink>
+        )}
         <Items order={order} />
         <ShippingDetails order={order} />
         <OrderSummary order={order} />

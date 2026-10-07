@@ -12,7 +12,12 @@ export const COMPANY = {
   address: "Zuideinde 10-A, 8428 HE Fochteloo, Friesland, Nederland",
   kvk: "80198961",
   vat: "NL003405536B18",
+  // Alleen tonen als gevuld (zie companyBlock en het retourformulier).
+  phone: "+31 6 488 260 71",
 }
+
+// Retouradres: nog te bevestigen door Renard. De invulplek blijft zichtbaar op het retourformulier.
+export const RETURN_ADDRESS = "[RETOURADRES nog te bevestigen]"
 
 // Vul in zodra de levertijd vaststaat; verschijnt nu als invulplek in de teksten.
 const LEVERTIJD = "[LEVERTIJD]"
@@ -21,6 +26,7 @@ export type ContentBlock =
   | { type: "h"; text: string }
   | { type: "p"; text: string }
   | { type: "ul"; items: string[] }
+  | { type: "link"; text: string; href: string } // href relatief aan de landcode, bv. "/account/orders"
 
 export type ContentPage = {
   title: string
@@ -36,6 +42,7 @@ const companyBlock: ContentBlock = {
     `E-mail: ${COMPANY.email}`,
     `KvK-nummer: ${COMPANY.kvk}`,
     `Btw-nummer: ${COMPANY.vat}`,
+    ...(COMPANY.phone ? [`Telefoon: ${COMPANY.phone}`] : []),
   ],
 }
 
@@ -90,6 +97,7 @@ export const CONTENT_PAGES: Record<string, ContentPage> = {
     blocks: [
       { type: "h", text: "14 dagen bedenktijd" },
       { type: "p", text: "Je hebt het recht om een aankoop binnen 14 dagen na ontvangst zonder opgave van reden te herroepen. De termijn begint op de dag nadat jij (of een door jou aangewezen derde) het product hebt ontvangen. Bestel je meerdere producten in één bestelling die apart worden geleverd, dan gaat de termijn in na ontvangst van het laatste product." },
+      { type: "link", text: "Retour aanmelden in je account", href: "/account/orders" },
       { type: "h", text: "Zo herroep je" },
       { type: "ul", items: [
         `Laat ons binnen de bedenktijd ondubbelzinnig weten dat je de overeenkomst herroept, bijvoorbeeld per e-mail naar ${COMPANY.email} of per post naar ${COMPANY.address}. Je mag hiervoor het modelformulier hieronder gebruiken, maar dat hoeft niet.`,
