@@ -1,21 +1,27 @@
 import { Metadata } from "next"
 
-import InteractiveLink from "@modules/common/components/interactive-link"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import StatusPage, {
+  primaryButtonClass,
+} from "@modules/common/components/status-page"
 
 export const metadata: Metadata = {
-  title: "404",
-  description: "Er ging iets mis",
+  title: "Winkelwagen niet gevonden | RC Choice",
+  description: "Deze winkelwagen bestaat niet (meer).",
 }
 
 export default function NotFound() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)]">
-      <h1 className="text-2xl-semi text-ui-fg-base">Pagina niet gevonden</h1>
-      <p className="text-small-regular text-ui-fg-base">
-        De winkelwagen die je probeert te bereiken bestaat niet. Wis je
-        cookies en probeer het opnieuw.
-      </p>
-      <InteractiveLink href="/">Ga naar de homepage</InteractiveLink>
-    </div>
+    <StatusPage
+      code="404"
+      eyebrow="Winkelwagen"
+      title="Winkelwagen niet gevonden"
+      text="Deze winkelwagen bestaat niet meer. Wis je cookies en probeer het opnieuw."
+      testId="cart-not-found-page"
+    >
+      <LocalizedClientLink href="/" className={primaryButtonClass}>
+        Naar de homepage
+      </LocalizedClientLink>
+    </StatusPage>
   )
 }
