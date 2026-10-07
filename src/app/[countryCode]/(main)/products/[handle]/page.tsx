@@ -5,6 +5,8 @@ import { getRegion, listRegions } from "@lib/data/regions"
 import ProductTemplate from "@modules/products/templates"
 import { HttpTypes } from "@medusajs/types"
 import { getBaseURL } from "@lib/util/env"
+import { breadcrumbJsonLd, Crumb } from "@lib/seo"
+import JsonLd from "@modules/seo/json-ld"
 
 type Props = {
   params: Promise<{ countryCode: string; handle: string }>
@@ -146,6 +148,22 @@ function productJsonLd(product: HttpTypes.StoreProduct, countryCode: string) {
   }
 }
 
+function productCrumbs(product: HttpTypes.StoreProduct, countryCode: string): Crumb[] {
+  const crumbs: Crumb[] = [{ name: "Home", path: `/${countryCode}` }]
+  const category = product.categories?.[0]
+  if (category?.handle) {
+    crumbs.push({
+      name: category.name,
+      path: `/${countryCode}/categories/${category.handle}`,
+    })
+  }
+  crumbs.push({
+    name: product.title,
+    path: `/${countryCode}/products/${product.handle}`,
+  })
+  return crumbs
+}
+
 export default async function ProductPage(props: Props) {
   const params = await props.params
   const region = await getRegion(params.countryCode)
@@ -178,6 +196,7 @@ export default async function ProductPage(props: Props) {
           ).replace(/</g, "\\u003c"),
         }}
       />
+      <JsonLd data={breadcrumbJsonLd(productCrumbs(pricedProduct, params.countryCode))} />
       <ProductTemplate
         product={pricedProduct}
         region={region}

@@ -4,6 +4,15 @@ import { notFound } from "next/navigation"
 import { resolvePageOrRedirect } from "@lib/data/pagination-redirect"
 import { getCategoryByHandle, listCategories } from "@lib/data/categories"
 import { listRegions } from "@lib/data/regions"
+import {
+  breadcrumbJsonLd,
+  canonicalPath,
+  metaText,
+  seoPage,
+  seoTitle,
+  withSeo,
+} from "@lib/seo"
+import JsonLd from "@modules/seo/json-ld"
 import { StoreRegion } from "@medusajs/types"
 import CategoryTemplate from "@modules/categories/templates"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
@@ -44,6 +53,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params
+  const searchParams = await props.searchParams
   try {
     const productCategory = await getCategoryByHandle(params.category)
 
@@ -51,13 +61,27 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
     const description = productCategory.description ?? `${title} category.`
 
-    return {
+    const current: Metadata = {
       title,
       description,
       alternates: {
         canonical: `${params.category.join("/")}`,
       },
     }
+
+    return withSeo(current, () => ({
+      title: seoTitle(productCategory.name, seoPage(searchParams.page)),
+      description: metaText(
+        productCategory.description,
+        `Bekijk ${productCategory.name} van RC Choice.`
+      ),
+      alternates: {
+        canonical: canonicalPath(
+          `/${params.countryCode}/categories/${params.category.join("/")}`,
+          seoPage(searchParams.page)
+        ),
+      },
+    }))
   } catch (error) {
     notFound()
   }
@@ -82,11 +106,22 @@ export default async function CategoryPage(props: Props) {
   })
 
   return (
-    <CategoryTemplate
-      category={productCategory}
-      sortBy={sortBy}
-      page={String(page)}
-      countryCode={params.countryCode}
-    />
+    <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: `/${params.countryCode}` },
+          {
+            name: productCategory.name,
+            path: `/${params.countryCode}/categories/${params.category.join("/")}`,
+          },
+        ])}
+      />
+      <CategoryTemplate
+        category={productCategory}
+        sortBy={sortBy}
+        page={String(page)}
+        countryCode={params.countryCode}
+      />
+    </>
   )
 }
