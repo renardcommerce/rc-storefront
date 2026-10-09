@@ -21,6 +21,8 @@ jobs:
       # Er is geen package-lock.json; de lockfile is yarn.lock (Yarn 4, meegeleverd in .yarn/releases).
       # Daarom `yarn install --immutable` (het equivalent van npm ci) in plaats van npm ci.
       - run: node .yarn/releases/yarn-4.12.0.cjs install --immutable
+      - run: npm run typecheck
+      - run: npm run typecheck
       - run: npm run test:specs
       # Alleen dummy-waarden, geen echte keys of secrets.
       - run: NODE_ENV=production npm run build
