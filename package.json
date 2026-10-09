@@ -12,7 +12,7 @@
     "build": "next build",
     "start": "next start -p 8000",
     "lint": "next lint",
-    "test:specs": "npx --yes tsx --test src/lib/util/product-specs.test.ts src/lib/util/retry-once.test.ts src/lib/util/pagination.test.ts src/lib/seo/seo.test.ts src/lib/util/returns.test.ts src/lib/util/brand.test.ts src/lib/util/order-status.test.ts",
+    "test:specs": "npx --yes tsx --test src/lib/util/product-specs.test.ts src/lib/util/retry-once.test.ts src/lib/util/pagination.test.ts src/lib/seo/seo.test.ts src/lib/util/returns.test.ts src/lib/util/sort-products.test.ts src/lib/util/brand.test.ts src/lib/util/order-status.test.ts",
     "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
