@@ -2,10 +2,9 @@ import type { HttpTypes } from "@medusajs/types"
 
 export type ProductSpec = { label: string; value: string }
 
-type SpecSource = Pick<
-  HttpTypes.StoreProduct,
-  "title" | "description" | "subtitle" | "metadata"
->
+// Alleen de titel is verplicht; de overige velden mogen ontbreken (ook in tests).
+type SpecSource = Pick<HttpTypes.StoreProduct, "title"> &
+  Partial<Pick<HttpTypes.StoreProduct, "description" | "subtitle" | "metadata">>
 
 /*
  * Principe: liever een leeg veld dan een fout veld. Een waarde wordt alleen

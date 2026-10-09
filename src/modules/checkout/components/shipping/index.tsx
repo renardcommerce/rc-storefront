@@ -21,6 +21,16 @@ type ShippingProps = {
   availableShippingMethods: HttpTypes.StoreCartShippingOption[] | null
 }
 
+// De store-API geeft service_zone mee als dat in `fields` is opgevraagd; het type kent alleen service_zone_id.
+type ShippingOptionWithZone = HttpTypes.StoreCartShippingOption & {
+  service_zone?: {
+    fulfillment_set?: {
+      type?: string
+      location?: { address?: HttpTypes.StoreCartAddress }
+    }
+  }
+}
+
 function formatAddress(address: HttpTypes.StoreCartAddress) {
   if (!address) {
     return ""
@@ -71,11 +81,15 @@ const Shipping: React.FC<ShippingProps> = ({
   const isOpen = searchParams.get("step") === "delivery"
 
   const _shippingMethods = availableShippingMethods?.filter(
-    (sm) => sm.service_zone?.fulfillment_set?.type !== "pickup"
+    (sm) =>
+      (sm as ShippingOptionWithZone).service_zone?.fulfillment_set?.type !==
+      "pickup"
   )
 
   const _pickupMethods = availableShippingMethods?.filter(
-    (sm) => sm.service_zone?.fulfillment_set?.type === "pickup"
+    (sm) =>
+      (sm as ShippingOptionWithZone).service_zone?.fulfillment_set?.type ===
+      "pickup"
   )
 
   const hasPickupOptions = !!_pickupMethods?.length
@@ -348,8 +362,8 @@ const Shipping: React.FC<ShippingProps> = ({
                               </span>
                               <span className="text-base-regular text-ui-fg-muted">
                                 {formatAddress(
-                                  option.service_zone?.fulfillment_set?.location
-                                    ?.address
+                                  (option as ShippingOptionWithZone).service_zone
+                                    ?.fulfillment_set?.location?.address as HttpTypes.StoreCartAddress
                                 )}
                               </span>
                             </div>
