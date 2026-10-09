@@ -135,13 +135,20 @@ export async function middleware(request: NextRequest) {
     return withRobotsHeader(NextResponse.next())
   }
 
-  // if one of the country codes is in the url and the cache id is not set, set the cache id and redirect
+  // if one of the country codes is in the url and the cache id is not set, set the cache id and render the page.
+  // Niet redirecten naar dezelfde URL: een client die cookies niet bewaart (zoekmachine, link-preview,
+  // monitoring) krijgt dan bij elk verzoek weer dezelfde redirect en komt nooit bij de pagina.
   if (urlHasCountryCode && !cacheIdCookie) {
-    response.cookies.set("_medusa_cache_id", cacheId, {
+    // Ook op het binnenkomende verzoek zetten, zodat server-componenten (getCacheTag) het id al in dit verzoek zien.
+    request.cookies.set("_medusa_cache_id", cacheId)
+
+    const next = NextResponse.next({ request: { headers: request.headers } })
+
+    next.cookies.set("_medusa_cache_id", cacheId, {
       maxAge: 60 * 60 * 24,
     })
 
-    return withRobotsHeader(response)
+    return withRobotsHeader(next)
   }
 
   // check if the url is a static asset
