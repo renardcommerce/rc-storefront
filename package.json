@@ -14,7 +14,7 @@
     "lint": "next lint",
     "test:middleware": "npx --yes tsx --test src/middleware.test.ts",
     "typecheck": "tsc --noEmit",
-    "test:specs": "npx --yes tsx --test src/lib/util/product-specs.test.ts src/lib/util/retry-once.test.ts src/lib/util/pagination.test.ts src/lib/seo/seo.test.ts src/lib/util/returns.test.ts src/lib/util/sort-products.test.ts src/lib/util/fetch-all.test.ts src/lib/util/brand.test.ts src/lib/util/order-status.test.ts src/lib/util/env.test.ts",
+    "test:specs": "npx --yes tsx --test src/lib/util/product-specs.test.ts src/lib/util/retry-once.test.ts src/lib/util/pagination.test.ts src/lib/seo/seo.test.ts src/lib/util/returns.test.ts src/lib/util/sort-products.test.ts src/lib/util/fetch-all.test.ts src/lib/util/brand.test.ts src/lib/util/order-status.test.ts src/lib/util/env.test.ts src/lib/content/pages.test.ts",
     "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
