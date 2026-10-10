@@ -105,7 +105,7 @@ const Register = ({ setCurrentView }: Props) => {
         Al een account?{" "}
         <button
           onClick={() => setCurrentView(LOGIN_VIEW.SIGN_IN)}
-          className="underline inline-flex items-center min-h-[44px] -my-3 px-1"
+          className="underline inline-flex items-center min-h-[44px] -my-3"
         >
           Inloggen
         </button>

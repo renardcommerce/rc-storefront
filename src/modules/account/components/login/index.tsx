@@ -52,7 +52,7 @@ const Login = ({ setCurrentView }: Props) => {
         Nog geen account?{" "}
         <button
           onClick={() => setCurrentView(LOGIN_VIEW.REGISTER)}
-          className="underline inline-flex items-center min-h-[44px] -my-3 px-1"
+          className="underline inline-flex items-center min-h-[44px] -my-3"
           data-testid="register-button"
         >
           Word klant
