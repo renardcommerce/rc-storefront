@@ -26,6 +26,7 @@ const Login = ({ setCurrentView }: Props) => {
           <Input
             label="E-mail"
             name="email"
+            id="login-email"
             type="email"
             title="Vul een geldig e-mailadres in."
             autoComplete="email"
@@ -35,6 +36,7 @@ const Login = ({ setCurrentView }: Props) => {
           <Input
             label="Wachtwoord"
             name="password"
+            id="login-password"
             type="password"
             autoComplete="current-password"
             required
@@ -42,7 +44,7 @@ const Login = ({ setCurrentView }: Props) => {
           />
         </div>
         <ErrorMessage error={message} data-testid="login-error-message" />
-        <SubmitButton data-testid="sign-in-button" className="w-full mt-6">
+        <SubmitButton data-testid="sign-in-button" className="w-full mt-6 min-h-[44px]">
           Inloggen
         </SubmitButton>
       </form>
@@ -50,7 +52,7 @@ const Login = ({ setCurrentView }: Props) => {
         Nog geen account?{" "}
         <button
           onClick={() => setCurrentView(LOGIN_VIEW.REGISTER)}
-          className="underline"
+          className="underline inline-flex items-center min-h-[44px] -my-3 px-1"
           data-testid="register-button"
         >
           Word klant

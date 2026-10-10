@@ -2,6 +2,12 @@
 
 import { sdk } from "@lib/config"
 import medusaError from "@lib/util/medusa-error"
+import {
+  AUTH_MESSAGES,
+  authErrorLogLine,
+  loginErrorMessage,
+  signupErrorMessage,
+} from "@lib/util/auth-errors"
 import { HttpTypes } from "@medusajs/types"
 import { revalidateTag } from "next/cache"
 import { redirect } from "next/navigation"
@@ -100,7 +106,8 @@ export async function signup(_currentState: unknown, formData: FormData) {
 
     return createdCustomer
   } catch (error: any) {
-    return error.toString()
+    console.error(authErrorLogLine("signup", error))
+    return signupErrorMessage(error)
   }
 }
 
@@ -117,13 +124,15 @@ export async function login(_currentState: unknown, formData: FormData) {
         revalidateTag(customerCacheTag)
       })
   } catch (error: any) {
-    return error.toString()
+    console.error(authErrorLogLine("login", error))
+    return loginErrorMessage(error)
   }
 
   try {
     await transferCart()
   } catch (error: any) {
-    return error.toString()
+    console.error(authErrorLogLine("login-winkelwagen", error))
+    return AUTH_MESSAGES.cart_transfer
   }
 }
 
