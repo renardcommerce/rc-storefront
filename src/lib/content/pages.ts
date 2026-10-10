@@ -19,8 +19,9 @@ export const COMPANY = {
 // Retouradres: nog te bevestigen door Renard. De invulplek blijft zichtbaar op het retourformulier.
 export const RETURN_ADDRESS = "[RETOURADRES nog te bevestigen]"
 
-// Vul in zodra de levertijd vaststaat; verschijnt nu als invulplek in de teksten.
-const LEVERTIJD = "[LEVERTIJD]"
+// Enige bron voor de levertijd: komt terug op verzending, FAQ en algemene voorwaarden (art. 7), NL en BE.
+// Wijzig de levertijd alleen hier.
+export const LEVERTIJD = "2 tot 4 werkdagen"
 
 export type ContentBlock =
   | { type: "h"; text: string }
