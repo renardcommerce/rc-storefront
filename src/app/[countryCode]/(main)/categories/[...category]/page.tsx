@@ -68,7 +68,11 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       title,
       description,
       alternates: {
-        canonical: `${params.category.join("/")}`,
+        // Volledig pad met landcode ("/nl/categories/usb-kabels"); eerder stond hier alleen de handle.
+        canonical: canonicalPath(
+          `/${params.countryCode}/categories/${params.category.join("/")}`,
+          seoPage(searchParams.page)
+        ),
       },
     }
 
