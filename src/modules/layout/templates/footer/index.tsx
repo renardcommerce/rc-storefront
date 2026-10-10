@@ -79,6 +79,15 @@ export default async function Footer() {
                     </LocalizedClientLink>
                   </li>
                 ))}
+                <li>
+                  <LocalizedClientLink
+                    className="inline-flex items-center min-h-[44px] hover:text-ink hover:underline"
+                    href="/account"
+                    data-testid="footer-account-link"
+                  >
+                    Mijn account
+                  </LocalizedClientLink>
+                </li>
               </ul>
             </div>
             <div className="flex flex-col gap-y-2">
