@@ -8,6 +8,10 @@ import { SubmitButton } from "@modules/checkout/components/submit-button"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { signup } from "@lib/data/customer"
 
+// Link blijft visueel gelijk; het aanraakgebied is minimaal 44 px hoog.
+const HIT_AREA =
+  "underline relative after:content-[''] after:absolute after:inset-x-0 after:top-1/2 after:h-11 after:-translate-y-1/2"
+
 type Props = {
   setCurrentView: (view: LOGIN_VIEW) => void
 }
@@ -32,6 +36,7 @@ const Register = ({ setCurrentView }: Props) => {
           <Input
             label="Voornaam"
             name="first_name"
+            id="register-first-name"
             required
             autoComplete="given-name"
             data-testid="first-name-input"
@@ -39,6 +44,7 @@ const Register = ({ setCurrentView }: Props) => {
           <Input
             label="Achternaam"
             name="last_name"
+            id="register-last-name"
             required
             autoComplete="family-name"
             data-testid="last-name-input"
@@ -46,6 +52,7 @@ const Register = ({ setCurrentView }: Props) => {
           <Input
             label="E-mail"
             name="email"
+            id="register-email"
             required
             type="email"
             autoComplete="email"
@@ -54,6 +61,7 @@ const Register = ({ setCurrentView }: Props) => {
           <Input
             label="Telefoon"
             name="phone"
+            id="register-phone"
             type="tel"
             autoComplete="tel"
             data-testid="phone-input"
@@ -61,31 +69,35 @@ const Register = ({ setCurrentView }: Props) => {
           <Input
             label="Wachtwoord"
             name="password"
+            id="register-password"
             required
             type="password"
             autoComplete="new-password"
             data-testid="password-input"
           />
         </div>
-        <ErrorMessage error={message} data-testid="register-error" />
+        <ErrorMessage
+          error={typeof message === "string" ? message : null}
+          data-testid="register-error"
+        />
         <span className="text-center text-ui-fg-base text-small-regular mt-6">
           Door een account aan te maken, ga je akkoord met het{" "}
           <LocalizedClientLink
             href="/content/privacybeleid"
-            className="underline"
+            className={HIT_AREA}
           >
             Privacybeleid
           </LocalizedClientLink>{" "}
           en de{" "}
           <LocalizedClientLink
             href="/content/algemene-voorwaarden"
-            className="underline"
+            className={HIT_AREA}
           >
-            Gebruiksvoorwaarden
+            Algemene voorwaarden
           </LocalizedClientLink>{" "}
           van RC Choice.
         </span>
-        <SubmitButton className="w-full mt-6" data-testid="register-button">
+        <SubmitButton className="w-full mt-6 min-h-[44px]" data-testid="register-button">
           Word klant
         </SubmitButton>
       </form>
@@ -93,7 +105,7 @@ const Register = ({ setCurrentView }: Props) => {
         Al een account?{" "}
         <button
           onClick={() => setCurrentView(LOGIN_VIEW.SIGN_IN)}
-          className="underline"
+          className="underline inline-flex items-center min-h-[44px] -my-3 px-1"
         >
           Inloggen
         </button>
