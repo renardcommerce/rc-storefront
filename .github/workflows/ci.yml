@@ -24,6 +24,7 @@ jobs:
       - run: npm run typecheck
       - run: npm run typecheck
       - run: npm run test:specs
+      - run: npm run test:middleware
       # Alleen dummy-waarden, geen echte keys of secrets.
       - run: NODE_ENV=production npm run build
         env:
