@@ -59,6 +59,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {type === "password" && (
             <button
               type="button"
+              aria-label={showPassword ? "Wachtwoord verbergen" : "Wachtwoord tonen"}
+              aria-pressed={showPassword}
               onClick={() => setShowPassword(!showPassword)}
               className="text-ui-fg-subtle h-11 min-w-[44px] px-3 flex items-center justify-center focus:outline-none transition-all duration-150 outline-none focus:text-ui-fg-base absolute right-0 top-0"
             >
