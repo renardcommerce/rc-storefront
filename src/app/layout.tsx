@@ -4,6 +4,21 @@ import "styles/globals.css"
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
+  // Iconen staan onder /assets: de middleware slaat dat pad over (geen landcode-redirect).
+  // Bestandsnamen bevatten een contenthash, zodat browsers een nieuw icoon echt ophalen.
+  manifest: "/assets/rc-choice.webmanifest",
+  icons: {
+    icon: [
+      { url: "/assets/icons/rc-choice-favicon.6c62c755.ico", sizes: "32x32" },
+      { url: "/assets/icons/rc-choice-favicon.22fbd5f3.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      {
+        url: "/assets/icons/rc-choice-apple-touch-icon.34406255.png",
+        sizes: "180x180",
+      },
+    ],
+  },
 }
 
 export default function RootLayout(props: { children: React.ReactNode }) {
