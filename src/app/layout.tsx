@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     ],
     apple: [
       {
-        url: "/assets/icons/rc-choice-apple-touch-icon.34406255.png",
+        url: "/assets/icons/rc-choice-shop-apple-touch-icon.f3b9d8ae.png",
         sizes: "180x180",
       },
     ],
