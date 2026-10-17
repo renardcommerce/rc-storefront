@@ -9,25 +9,25 @@
   "theme_color": "#050B1C",
   "icons": [
     {
-      "src": "/assets/icons/rc-choice-icon-192.60f8c2ce.png",
+      "src": "/assets/icons/rc-choice-shop-icon-192.4838fa1a.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/assets/icons/rc-choice-icon-512.ce536c66.png",
+      "src": "/assets/icons/rc-choice-shop-icon-512.655819a8.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/assets/icons/rc-choice-maskable-192.9fddf1e6.png",
+      "src": "/assets/icons/rc-choice-shop-maskable-192.f7a8c6cc.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/assets/icons/rc-choice-maskable-512.70852a13.png",
+      "src": "/assets/icons/rc-choice-shop-maskable-512.744c3ab1.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
