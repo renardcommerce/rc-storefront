@@ -1,8 +1,10 @@
 {
-  "name": "RC Choice",
-  "short_name": "RC CHOICE",
-  "start_url": "/",
-  "display": "browser",
+  "id": "/nl",
+  "name": "RC CHOICE Shop",
+  "short_name": "RC CHOICE Shop",
+  "start_url": "/nl",
+  "scope": "/",
+  "display": "standalone",
   "background_color": "#050B1C",
   "theme_color": "#050B1C",
   "icons": [
