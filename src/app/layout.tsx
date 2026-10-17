@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
   // Iconen staan onder /assets: de middleware slaat dat pad over (geen landcode-redirect).
   // Bestandsnamen bevatten een contenthash, zodat browsers een nieuw icoon echt ophalen.
+  applicationName: "RC CHOICE Shop",
+  appleWebApp: { capable: true, title: "RC CHOICE Shop" },
   manifest: "/assets/rc-choice.webmanifest",
   icons: {
     icon: [
